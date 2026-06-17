@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import NextLink from "next/link";
 import {
   Avatar,
   Button,
@@ -9,12 +10,11 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Link,
 } from "@heroui/react";
 import { Bars } from "@gravity-ui/icons";
+import ThemeToggle from "./ThemeToggle";
 
 export default function MainNavbar() {
-  const [isDark, setIsDark] = useState(false);
   const [isLoggedIn] = useState(false);
 
   const navItems = [
@@ -28,61 +28,71 @@ export default function MainNavbar() {
     },
   ];
 
+  const navLinkClass =
+    "text-sm font-semibold uppercase tracking-widest text-foreground no-underline transition-colors hover:text-accent";
+
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-default-200 bg-white/95 backdrop-blur-md dark:bg-black/80">
+    <nav className="sticky top-0 z-50 w-full border-b border-border bg-surface/95 backdrop-blur-md">
       <header className="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4 lg:px-8">
         {/* ================= MOBILE LEFT ================= */}
         <div className="flex items-center md:hidden">
           <Drawer>
-            <Button isIconOnly variant="light">
+            <Button isIconOnly variant="light" className="text-foreground">
               <Bars />
             </Button>
 
             <Drawer.Backdrop>
-              <Drawer.Content placement="left">
+              <Drawer.Content
+                placement="left"
+                className="bg-surface text-foreground"
+              >
                 <Drawer.Dialog>
                   <Drawer.CloseTrigger />
+
                   <Drawer.Body>
-                    <nav className="flex flex-col gap-2">
+                    <nav className="flex flex-col gap-2 pt-6">
                       {navItems.map((item) => (
-                        <Link
+                        <NextLink
                           key={item.href}
                           href={item.href}
-                          underline="none"
-                          className="rounded-lg px-3 py-2 hover:bg-default-100"
+                          className="rounded-lg px-3 py-2 font-medium text-foreground transition hover:bg-surface-hover hover:text-accent"
                         >
                           {item.label}
-                        </Link>
+                        </NextLink>
                       ))}
 
-                      <div className="mt-4 border-t pt-4">
+                      <div className="mt-4 border-t border-border pt-4">
                         {!isLoggedIn ? (
                           <div className="flex flex-col gap-3">
-                            <Button
-                              as={Link}
+                            <NextLink
                               href="/login"
-                              variant="bordered"
-                              fullWidth
-                              className="uppercase"
+                              className="flex h-10 w-full items-center justify-center border border-border text-sm font-semibold uppercase text-foreground no-underline rounded-md"
                             >
                               Login
-                            </Button>
+                            </NextLink>
 
-                            <Button
-                              as={Link}
+                            <NextLink
                               href="/register"
-                              color="primary"
-                              fullWidth
-                              className="uppercase"
+                              className="flex h-10 w-full items-center justify-center bg-accent text-sm font-semibold uppercase text-accent-foreground no-underline rounded-md"
                             >
                               Register
-                            </Button>
+                            </NextLink>
                           </div>
                         ) : (
                           <div className="flex flex-col gap-3">
-                            <Link href="/dashboard">Dashboard</Link>
+                            <NextLink
+                              href="/dashboard"
+                              className="text-foreground hover:text-accent"
+                            >
+                              Dashboard
+                            </NextLink>
 
-                            <Link href="/profile">Profile</Link>
+                            <NextLink
+                              href="/profile"
+                              className="text-foreground hover:text-accent"
+                            >
+                              Profile
+                            </NextLink>
 
                             <Button color="danger" variant="light">
                               Logout
@@ -98,92 +108,63 @@ export default function MainNavbar() {
           </Drawer>
         </div>
 
-        {/* ================= DESKTOP LEFT NAV ================= */}
+        {/* ================= DESKTOP LEFT ================= */}
         <ul className="hidden items-center gap-10 md:flex">
           {navItems.map((item) => (
             <li key={item.href}>
-              <Link
-                href={item.href}
-                underline="none"
-                className="
-                  text-sm
-                  font-semibold
-                  uppercase
-                  tracking-widest
-                  text-black
-                  transition-colors
-                  hover:text-emerald-600
-                  hover:no-underline
-                  dark:text-white
-                "
-              >
+              <NextLink href={item.href} className={navLinkClass}>
                 {item.label}
-              </Link>
+              </NextLink>
             </li>
           ))}
         </ul>
 
         {/* ================= LOGO ================= */}
-        <Link
+        <NextLink
           href="/"
-          underline="none"
           className="
-            absolute left-1/2 -translate-x-1/2
-            flex flex-col items-center leading-none
-            text-black
-            dark:text-white
+            absolute left-1/2
+            flex -translate-x-1/2 flex-col items-center
+            leading-none text-foreground
 
             md:static
             md:translate-x-0
             md:items-start
           "
         >
-          <span className="text-[10px] font-bold uppercase tracking-[0.25em]">
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-accent">
             RecipeHub
           </span>
 
           <span className="font-serif text-3xl font-bold tracking-tight">
             Kitchen
           </span>
-        </Link>
+        </NextLink>
 
         {/* ================= MOBILE RIGHT ================= */}
-        <button
-          onClick={() => setIsDark(!isDark)}
-          className="text-sm font-medium md:hidden uppercase"
-        >
-          {isDark ? "Dark" : "Light"}
-        </button>
+        <div className="flex items-center md:hidden">
+          <ThemeToggle />
+        </div>
 
         {/* ================= DESKTOP RIGHT ================= */}
         <div className="hidden items-center gap-4 md:flex">
-          <button
-            onClick={() => setIsDark(!isDark)}
-            className="text-sm font-medium uppercase"
-          >
-            {isDark ? "Dark" : "Light"}
-          </button>
+          <ThemeToggle />
 
           {!isLoggedIn ? (
             <>
-              <Button
-                as={Link}
+              <NextLink
                 href="/login"
-                variant="light"
-                className="font-semibold uppercase"
+                className="font-semibold uppercase text-link transition hover:text-accent"
               >
                 Login
-              </Button>
+              </NextLink>
 
-              <Button
-                as={Link}
+              <NextLink
                 href="/register"
-                color="primary"
-                radius="full"
-                className="font-semibold uppercase"
+                className="font-semibold uppercase text-link transition hover:text-accent"
               >
                 Register
-              </Button>
+              </NextLink>
             </>
           ) : (
             <Dropdown placement="bottom-end">
@@ -195,7 +176,7 @@ export default function MainNavbar() {
                 />
               </DropdownTrigger>
 
-              <DropdownMenu aria-label="User menu">
+              <DropdownMenu aria-label="User Menu">
                 <DropdownItem key="dashboard" href="/dashboard">
                   Dashboard
                 </DropdownItem>
