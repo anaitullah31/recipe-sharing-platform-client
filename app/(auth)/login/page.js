@@ -3,9 +3,27 @@
 import { useState } from "react";
 import { Button, Link } from "@heroui/react";
 import { Envelope, Eye, EyeSlash, Lock } from "@gravity-ui/icons";
+import { authClient } from "@/app/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function LoginPage() {
   const [isVisible, setIsVisible] = useState(false);
+
+  const handleLoginFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    console.log(formData);
+
+    const { data, error } = await authClient.signIn.email({
+      email: formData.get("email"),
+      password: formData.get("password"),
+    });
+    if (data) {
+      redirect("/");
+    }
+  };
 
   return (
     <section className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground">
@@ -59,7 +77,7 @@ export default function LoginPage() {
               </p>
             </div>
 
-            <form className="space-y-4">
+            <form onSubmit={handleLoginFormSubmit} className="space-y-4">
               {/* Email */}
               <div className="flex h-12 items-center gap-3 rounded-lg border border-field-border bg-field px-4 transition-all focus-within:border-field-border-focus">
                 <Envelope className="size-4 text-accent" />

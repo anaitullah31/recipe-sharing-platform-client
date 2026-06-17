@@ -10,9 +10,28 @@ import {
   Lock,
   Person,
 } from "@gravity-ui/icons";
+import { authClient } from "@/app/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function RegisterPage() {
   const [isVisible, setIsVisible] = useState(false);
+
+  const handleRegisterFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const { data, error } = await authClient.signUp.email({
+      name: formData.get("name"),
+      email: formData.get("email"),
+      image: formData.get("image"),
+      password: formData.get("password"),
+    });
+    if (data) {
+      redirect("/");
+    }
+  };
 
   return (
     <section className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground">
@@ -70,7 +89,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Form */}
-            <form className="space-y-4">
+            <form onSubmit={handleRegisterFormSubmit} className="space-y-4">
               {/* Name */}
               <div className="flex h-12 items-center gap-3 rounded-lg border border-field-border bg-field px-4 transition-all focus-within:border-field-border-focus">
                 <Person className="size-4 text-accent" />
@@ -119,7 +138,7 @@ export default function RegisterPage() {
                 />
 
                 <button
-                  type="button"
+                  type="submit"
                   onClick={() => setIsVisible(!isVisible)}
                   className="text-muted transition-colors hover:text-foreground"
                 >
