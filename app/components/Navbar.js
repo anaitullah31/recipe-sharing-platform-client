@@ -10,12 +10,21 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Label,
 } from "@heroui/react";
-import { Bars } from "@gravity-ui/icons";
+import { ArrowRightFromSquare, Bars, Gear, Persons } from "@gravity-ui/icons";
 import ThemeToggle from "./ThemeToggle";
+import { authClient } from "../lib/auth-client";
 
 export default function MainNavbar() {
-  const [isLoggedIn] = useState(false);
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+
+  const handleLogout = async () => {
+    console.log("Hi");
+
+    await authClient.signOut();
+  };
 
   const navItems = [
     {
@@ -62,7 +71,7 @@ export default function MainNavbar() {
                       ))}
 
                       <div className="mt-4 border-t border-border pt-4">
-                        {!isLoggedIn ? (
+                        {!user ? (
                           <div className="flex flex-col gap-3">
                             <NextLink
                               href="/login"
@@ -70,13 +79,13 @@ export default function MainNavbar() {
                             >
                               Login
                             </NextLink>
-
+                            {/* 
                             <NextLink
                               href="/register"
                               className="flex h-10 w-full items-center justify-center bg-accent text-sm font-semibold uppercase text-accent-foreground no-underline rounded-md"
                             >
                               Register
-                            </NextLink>
+                            </NextLink> */}
                           </div>
                         ) : (
                           <div className="flex flex-col gap-3">
@@ -94,7 +103,11 @@ export default function MainNavbar() {
                               Profile
                             </NextLink>
 
-                            <Button color="danger" variant="light">
+                            <Button
+                              onClick={handleLogout}
+                              color="danger"
+                              variant="light"
+                            >
                               Logout
                             </Button>
                           </div>
@@ -150,7 +163,7 @@ export default function MainNavbar() {
         <div className="hidden items-center gap-4 md:flex">
           <ThemeToggle />
 
-          {!isLoggedIn ? (
+          {!user ? (
             <>
               <NextLink
                 href="/login"
@@ -158,37 +171,69 @@ export default function MainNavbar() {
               >
                 Login
               </NextLink>
-
+              {/* 
               <NextLink
                 href="/register"
                 className="font-semibold uppercase text-link transition hover:text-accent"
               >
                 Register
-              </NextLink>
+              </NextLink> */}
             </>
           ) : (
-            <Dropdown placement="bottom-end">
-              <DropdownTrigger>
-                <Avatar
-                  as="button"
-                  size="sm"
-                  src="https://i.pravatar.cc/150?img=12"
-                />
-              </DropdownTrigger>
-
-              <DropdownMenu aria-label="User Menu">
-                <DropdownItem key="dashboard" href="/dashboard">
-                  Dashboard
-                </DropdownItem>
-
-                <DropdownItem key="profile" href="/profile">
-                  Profile
-                </DropdownItem>
-
-                <DropdownItem key="logout" color="danger">
-                  Logout
-                </DropdownItem>
-              </DropdownMenu>
+            <Dropdown>
+              <Dropdown.Trigger className="rounded-full">
+                <Avatar>
+                  <Avatar.Image
+                    alt="Junior Garcia"
+                    src="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/orange.jpg"
+                  />
+                  <Avatar.Fallback delayMs={600}>JD</Avatar.Fallback>
+                </Avatar>
+              </Dropdown.Trigger>
+              <Dropdown.Popover>
+                <div className="px-3 pt-3 pb-1">
+                  <div className="flex items-center gap-2">
+                    <Avatar size="sm">
+                      <Avatar.Image
+                        alt="Jane"
+                        src="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/orange.jpg"
+                      />
+                      <Avatar.Fallback delayMs={600}>JD</Avatar.Fallback>
+                    </Avatar>
+                    <div className="flex flex-col gap-0">
+                      <p className="text-sm leading-5 font-medium">{user.name}</p>
+                      <p className="text-xs leading-none text-muted">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <Dropdown.Menu>
+                  <Dropdown.Item id="dashboard" textValue="Dashboard">
+                    <Label>Dashboard</Label>
+                  </Dropdown.Item>
+                  <Dropdown.Item id="profile" textValue="Profile">
+                    <Label>Profile</Label>
+                  </Dropdown.Item>
+                  <Dropdown.Item id="settings" textValue="Settings">
+                    <div className="flex w-full items-center justify-between gap-2">
+                      <Label>Settings</Label>
+                      <Gear className="size-3.5 text-muted" />
+                    </div>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    id="logout"
+                    textValue="Logout"
+                    variant="danger"
+                    onClick={handleLogout}
+                  >
+                    <div className="flex w-full items-center justify-between gap-2">
+                      <Label>Log Out</Label>
+                      <ArrowRightFromSquare className="size-3.5 text-danger" />
+                    </div>
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown.Popover>
             </Dropdown>
           )}
         </div>

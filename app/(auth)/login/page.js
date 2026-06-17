@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Link } from "@heroui/react";
+import { Button, } from "@heroui/react";
+import NextLink from "next/link";
 import { Envelope, Eye, EyeSlash, Lock } from "@gravity-ui/icons";
 import { authClient } from "@/app/lib/auth-client";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -149,13 +151,13 @@ export default function LoginPage() {
 
               <p className="pt-2 text-center text-sm text-muted">
                 Do not have an account?{" "}
-                <Link
+                <NextLink
                   href="/register"
                   underline="none"
                   className="font-semibold text-link no-underline! hover:no-underline!"
                 >
                   Register
-                </Link>
+                </NextLink>
               </p>
             </form>
           </div>

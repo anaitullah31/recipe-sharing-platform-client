@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Link } from "@heroui/react";
+import { Button, } from "@heroui/react";
+import NextLink from "next/link";
 import {
   Envelope,
   LinkSlash,
@@ -179,13 +180,13 @@ export default function RegisterPage() {
               {/* Login Link */}
               <p className="pt-2 text-center text-sm text-muted">
                 Already have an account?{" "}
-                <Link
+                <NextLink
                   href="/login"
                   underline="none"
                   className="font-semibold text-link no-underline! hover:no-underline! rounded-md"
                 >
                   Login
-                </Link>
+                </NextLink>
               </p>
             </form>
           </div>
