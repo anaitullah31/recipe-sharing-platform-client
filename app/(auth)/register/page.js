@@ -29,6 +29,7 @@ export default function RegisterPage() {
       image: formData.get("image"),
       password: formData.get("password"),
       role: formData.get("role"),
+      plan: "free",
     });
     if (data) {
       redirect("/");

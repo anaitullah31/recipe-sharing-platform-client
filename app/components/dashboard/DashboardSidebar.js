@@ -21,14 +21,49 @@ export function DashboardSidebar() {
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
-  const navItems = [
+  //   const navItems = [
+  //     { icon: ChartColumn, label: "Overview", href: "/dashboard" },
+  //     { icon: CirclePlus, label: "Add Recipe", href: "/dashboard/add-recipe" },
+  //     { icon: ListOl, label: "My Recipes", href: "/dashboard/my-recipes" },
+  //     { icon: Bookmark, label: "Favorites", href: "/dashboard/favorites" },
+  //     { icon: ShoppingCart, label: "Purchased", href: "/dashboard/my-purchased" },
+  //     { icon: Person, label: "Profile", href: "/dashboard/profile" },
+  //   ];
+
+  const commonNavLinks = [
     { icon: ChartColumn, label: "Overview", href: "/dashboard" },
-    { icon: CirclePlus, label: "Add Recipe", href: "/dashboard/add-recipe" },
-    { icon: ListOl, label: "My Recipes", href: "/dashboard/my-recipes" },
-    { icon: Bookmark, label: "Favorites", href: "/dashboard/favorites" },
-    { icon: ShoppingCart, label: "Purchased", href: "/dashboard/purchased" },
     { icon: Person, label: "Profile", href: "/dashboard/profile" },
+    { icon: ShoppingCart, label: "Purchased", href: "/dashboard/my-purchased" },
+    { icon: Bookmark, label: "Favorites", href: "/dashboard/favorites" },
+    { icon: ListOl, label: "My Recipes", href: "/dashboard/my-recipes" },
+    { icon: CirclePlus, label: "Add Recipe", href: "/dashboard/add-recipe" },
   ];
+
+  const adminNavLinks = [
+    { icon: Bookmark, label: "All Users", href: "/dashboard/all-users" },
+    {
+      icon: ListOl,
+      label: "All Uploaded Recipes",
+      href: "/dashboard/all-uploaded-recipes",
+    },
+    {
+      icon: CirclePlus,
+      label: "All Premium Members",
+      href: "/dashboard/all-premium-members",
+    },
+    {
+      icon: CirclePlus,
+      label: "All Reports",
+      href: "/dashboard/all-reports",
+    },
+  ];
+
+  const navLinksMap = {
+    user: commonNavLinks,
+    admin: [...commonNavLinks, ...adminNavLinks],
+  };
+
+  const navItems = navLinksMap[user?.role] || commonNavLinks;
 
   return (
     <aside className="sticky top-0 hidden h-screen w-72 shrink-0 border-r border-[var(--border)] bg-[var(--surface-secondary)] px-4 py-5 lg:flex lg:flex-col">
@@ -118,7 +153,7 @@ export function DashboardSidebar() {
       <div className="mt-6 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-sm">
         <div className="flex items-center gap-3">
           <Image
-            src={user?.image || '/assets/profile.png'}
+            src={user?.image || "/assets/profile.png"}
             alt={user?.name || "User"}
             width={40}
             height={40}

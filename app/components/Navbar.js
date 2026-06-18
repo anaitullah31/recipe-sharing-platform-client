@@ -10,7 +10,6 @@ import { authClient } from "../lib/auth-client";
 export default function MainNavbar() {
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  console.log(user);
 
   const handleLogout = async () => {
     await authClient.signOut();
@@ -26,6 +25,15 @@ export default function MainNavbar() {
       href: "/recipes",
     },
   ];
+
+  if(user?.email){
+    navItems.push(
+      {
+      label: "Dashboard",
+      href: "/dashboard",
+    },
+    )
+  }
 
   const navLinkClass =
     "text-sm font-semibold uppercase tracking-widest text-foreground no-underline transition-colors hover:text-accent";
@@ -69,13 +77,6 @@ export default function MainNavbar() {
                             >
                               Login
                             </NextLink>
-                            {/* 
-                            <NextLink
-                              href="/register"
-                              className="flex h-10 w-full items-center justify-center bg-accent text-sm font-semibold uppercase text-accent-foreground no-underline rounded-md"
-                            >
-                              Register
-                            </NextLink> */}
                           </div>
                         ) : (
                           <div className="flex flex-col gap-3">
@@ -161,13 +162,6 @@ export default function MainNavbar() {
               >
                 Login
               </NextLink>
-              {/* 
-              <NextLink
-                href="/register"
-                className="font-semibold uppercase text-link transition hover:text-accent"
-              >
-                Register
-              </NextLink> */}
             </>
           ) : (
             <Dropdown>
