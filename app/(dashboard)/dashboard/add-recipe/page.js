@@ -70,14 +70,14 @@ export default function AddRecipePage() {
   };
 
   return (
-    <section className="min-h-screen bg-[var(--background)] px-4 py-8 text-[var(--foreground)]">
+    <section className="min-h-screen bg-background px-4 py-8 text-foreground">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8">
-          <p className="mb-2 text-sm font-medium text-[var(--accent)]">
+          <p className="mb-2 text-sm font-medium text-accent">
             RecipeHub
           </p>
           <h1 className="text-3xl font-bold">Add New Recipe</h1>
-          <p className="mt-2 max-w-2xl text-sm text-[var(--surface-tertiary-foreground)]">
+          <p className="mt-2 max-w-2xl text-sm text-surface-tertiary-foreground">
             Share your favorite recipe with food lovers. Add details,
             ingredients, cooking steps, and a beautiful recipe image.
           </p>
@@ -102,7 +102,7 @@ export default function AddRecipePage() {
                 </TextField>
 
                 <div>
-                  <Label className="mb-[4px] block">
+                  <Label className="mb-1 block">
                     Recipe Image<span className="text-red-500">*</span>
                   </Label>
                   <Input
