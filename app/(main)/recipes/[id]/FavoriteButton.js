@@ -1,7 +1,7 @@
 "use client";
 
 import { serverMutation } from "@/app/lib/core/server";
-import { Flag } from "@gravity-ui/icons";
+import { Bookmark } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { useState } from "react";
 
@@ -75,12 +75,12 @@ const FavoriteButton = ({
     <button
       onClick={handleFavorite}
       disabled={loading}
-      className={`ml-auto cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-60 ${
+      className={`cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-60 ${
         isFavorite ? "text-danger" : "hover:text-danger"
       }`}
       title={isFavorite ? "Remove from favorites" : "Add to favorites"}
     >
-      <Icon data={Flag} size={17} />
+      <Icon data={Bookmark} size={17} />
     </button>
   );
 };

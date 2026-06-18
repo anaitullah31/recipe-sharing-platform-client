@@ -6,6 +6,7 @@ import {
   NodesRight,
   Clock,
   ShoppingBasket,
+  Flag,
 } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { fetchData } from "@/app/lib/core/server";
@@ -80,20 +81,22 @@ const RecipeDetails = async ({ params }) => {
           <div className="mt-10 flex items-center gap-5 border-y border-separator py-5 text-surface-secondary-foreground">
             <LikeButton recipe={recipe} userEmail={user?.email} />
 
-            <button className="hover:text-accent">
-              <Icon data={Bookmark} size={17} />
-            </button>
-
-            <button className="hover:text-accent">
-              <Icon data={NodesRight} size={17} />
-            </button>
-
             <FavoriteButton
               recipe={recipe}
               user={user}
               initiallyFavorite={!!favoriteInfo}
               favoriteId={favoriteInfo?._id}
             />
+
+            <button className="hover:text-accent">
+              <Icon data={NodesRight} size={17} />
+            </button>
+
+            <button
+              className={`ml-auto cursor-pointer transition disabled:cursor-not-allowed disabled:opacity-60`}
+            >
+              <Icon data={Flag} size={17} />
+            </button>
           </div>
 
           <button className="mt-8 flex w-full max-w-md items-center justify-between rounded bg-accent px-6 py-4 text-sm font-bold text-accent-foreground shadow-lg transition hover:bg-accent-hover">
