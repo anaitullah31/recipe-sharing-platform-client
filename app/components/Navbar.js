@@ -2,16 +2,7 @@
 
 import { useState } from "react";
 import NextLink from "next/link";
-import {
-  Avatar,
-  Button,
-  Drawer,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Label,
-} from "@heroui/react";
+import { Avatar, Button, Drawer, Dropdown, Label } from "@heroui/react";
 import { ArrowRightFromSquare, Bars, Gear, Persons } from "@gravity-ui/icons";
 import ThemeToggle from "./ThemeToggle";
 import { authClient } from "../lib/auth-client";
@@ -19,10 +10,9 @@ import { authClient } from "../lib/auth-client";
 export default function MainNavbar() {
   const { data: session } = authClient.useSession();
   const user = session?.user;
+  console.log(user);
 
   const handleLogout = async () => {
-    console.log("Hi");
-
     await authClient.signOut();
   };
 
@@ -201,7 +191,9 @@ export default function MainNavbar() {
                       <Avatar.Fallback delayMs={600}>JD</Avatar.Fallback>
                     </Avatar>
                     <div className="flex flex-col gap-0">
-                      <p className="text-sm leading-5 font-medium">{user.name}</p>
+                      <p className="text-sm leading-5 font-medium">
+                        {user.name}
+                      </p>
                       <p className="text-xs leading-none text-muted">
                         {user.email}
                       </p>

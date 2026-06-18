@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, } from "@heroui/react";
+import { Button } from "@heroui/react";
 import NextLink from "next/link";
 import {
   Envelope,
@@ -28,6 +28,7 @@ export default function RegisterPage() {
       email: formData.get("email"),
       image: formData.get("image"),
       password: formData.get("password"),
+      role: formData.get("role"),
     });
     if (data) {
       redirect("/");
@@ -132,14 +133,14 @@ export default function RegisterPage() {
                 <Lock className="size-4 text-accent" />
 
                 <input
-                  type={isVisible ? "text" : "password"}
                   name="password"
+                  type={isVisible ? "text" : "password"}
                   placeholder="Password"
-                  className="w-full bg-transparent text-sm outline-none placeholder:text-muted"
+                  className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted"
                 />
 
                 <button
-                  type="submit"
+                  type="button"
                   onClick={() => setIsVisible(!isVisible)}
                   className="text-muted transition-colors hover:text-foreground"
                 >
@@ -150,6 +151,15 @@ export default function RegisterPage() {
                   )}
                 </button>
               </div>
+
+              {/* Role */}
+              <input
+                type="hidden"
+                name="role"
+                defaultValue="user"
+                placeholder="User Role"
+                className="w-full bg-transparent text-sm outline-none placeholder:text-muted"
+              />
 
               {/* Register Button */}
               <Button
