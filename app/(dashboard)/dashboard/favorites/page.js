@@ -3,14 +3,14 @@ import Link from "next/link";
 import { TrashBin, ArrowRight } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { getUserSession } from "@/app/lib/core/session";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchData, serverMutation } from "@/app/lib/core/server";
+import DeleteFavoriteButton from "./DeleteFavoriteButton";
 
 const FavoritesPage = async () => {
   const user = await getUserSession();
 
   const data = await fetchData(`/favorites?userEmail=${user?.email}`);
   const favorites = data?.data;
-  
 
   return (
     <section className="min-h-screen bg-background px-6 py-14 text-foreground lg:px-16">
@@ -82,9 +82,7 @@ const FavoritesPage = async () => {
                       <Icon data={ArrowRight} size={13} />
                     </Link>
 
-                    <button className="cursor-pointer text-surface-secondary-foreground transition hover:text-danger">
-                      <Icon data={TrashBin} size={16} />
-                    </button>
+                    <DeleteFavoriteButton favoriteId={favorite._id} />
                   </div>
                 </div>
               ))}
