@@ -34,10 +34,10 @@ export function DashboardSidebar() {
   ];
 
   const adminNavLinks = [
-    { icon: Persons, label: "All Users", href: "/dashboard/all-users" },
+    { icon: Persons, label: "Manage Users", href: "/dashboard/all-users" },
     {
       icon: SquareListUl,
-      label: "All Recipes",
+      label: "Manage Recipes",
       href: "/dashboard/all-recipes",
     },
     {
