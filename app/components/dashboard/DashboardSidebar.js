@@ -12,6 +12,9 @@ import {
   Magnifier,
   Gear,
   CircleQuestion,
+  Persons,
+  SquareListUl,
+  ScalesUnbalanced,
 } from "@gravity-ui/icons";
 import { authClient } from "@/app/lib/auth-client";
 import Image from "next/image";
@@ -20,15 +23,6 @@ export function DashboardSidebar() {
   const pathname = usePathname();
   const { data: session } = authClient.useSession();
   const user = session?.user;
-
-  //   const navItems = [
-  //     { icon: ChartColumn, label: "Overview", href: "/dashboard" },
-  //     { icon: CirclePlus, label: "Add Recipe", href: "/dashboard/add-recipe" },
-  //     { icon: ListOl, label: "My Recipes", href: "/dashboard/my-recipes" },
-  //     { icon: Bookmark, label: "Favorites", href: "/dashboard/favorites" },
-  //     { icon: ShoppingCart, label: "Purchased", href: "/dashboard/my-purchased" },
-  //     { icon: Person, label: "Profile", href: "/dashboard/profile" },
-  //   ];
 
   const commonNavLinks = [
     { icon: ChartColumn, label: "Overview", href: "/dashboard" },
@@ -40,19 +34,14 @@ export function DashboardSidebar() {
   ];
 
   const adminNavLinks = [
-    { icon: Bookmark, label: "All Users", href: "/dashboard/all-users" },
+    { icon: Persons, label: "All Users", href: "/dashboard/all-users" },
     {
-      icon: ListOl,
-      label: "All Uploaded Recipes",
-      href: "/dashboard/all-uploaded-recipes",
+      icon: SquareListUl,
+      label: "All Recipes",
+      href: "/dashboard/all-recipes",
     },
     {
-      icon: CirclePlus,
-      label: "All Premium Members",
-      href: "/dashboard/all-premium-members",
-    },
-    {
-      icon: CirclePlus,
+      icon: ScalesUnbalanced,
       label: "All Reports",
       href: "/dashboard/all-reports",
     },
