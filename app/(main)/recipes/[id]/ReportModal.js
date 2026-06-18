@@ -57,7 +57,11 @@ const ReportButton = ({ recipe, user }) => {
 
   return (
     <Modal>
-      <Button className="ml-auto cursor-pointer transition hover:text-danger">
+      <Button
+        isIconOnly
+        variant="light"
+        className="ml-auto min-w-0 bg-transparent p-0 hover:bg-transparent hover:text-danger"
+      >
         <Icon data={Flag} size={17} />
       </Button>
 
