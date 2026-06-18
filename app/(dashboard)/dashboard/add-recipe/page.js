@@ -20,13 +20,12 @@ export default function AddRecipePage() {
   const [imageFile, setImageFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
     setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
   };
 
   const handleSubmit = async (e) => {
@@ -67,6 +66,7 @@ export default function AddRecipePage() {
       ingredients: formData.get("ingredients"),
       instructions: formData.get("instructions"),
     };
+    console.log(recipe);
   };
 
   return (
@@ -74,7 +74,7 @@ export default function AddRecipePage() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-8">
           <p className="mb-2 text-sm font-medium text-[var(--accent)]">
-            RecipeHub Dashboard
+            RecipeHub
           </p>
           <h1 className="text-3xl font-bold">Add New Recipe</h1>
           <p className="mt-2 max-w-2xl text-sm text-[var(--surface-tertiary-foreground)]">
@@ -83,13 +83,8 @@ export default function AddRecipePage() {
           </p>
         </div>
 
-        <Form className="w-full max-w-3xl">
+        <Form onSubmit={handleSubmit} className="w-full max-w-3xl">
           <Fieldset>
-            {/* <Fieldset.Legend>Add New Recipe</Fieldset.Legend>
-            <Description>
-              Share your favorite recipe with the community.
-            </Description> */}
-
             <FieldGroup>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <TextField
@@ -107,7 +102,7 @@ export default function AddRecipePage() {
                 </TextField>
 
                 <div>
-                  <Label className="mb-2 block">
+                  <Label className="mb-[4px] block">
                     Recipe Image<span className="text-red-500">*</span>
                   </Label>
                   <Input
