@@ -3,6 +3,7 @@ import RecipeCard from "./RecipeCard";
 
 const RecipePage = async () => {
   const recipes = await fetchData("/recipes");
+console.log(recipes, "RECIPE");
 
   return (
     <div className="max-w-7xl mx-auto">
