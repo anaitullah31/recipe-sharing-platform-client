@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   Bookmark,
   NodesRight,
-  Flag,
   Clock,
   ShoppingBasket,
 } from "@gravity-ui/icons";
@@ -12,14 +11,17 @@ import { Icon } from "@gravity-ui/uikit";
 import { fetchData } from "@/app/lib/core/server";
 import LikeButton from "./LikeButton";
 import { getUserSession } from "@/app/lib/core/session";
+import FavoriteButton from "./FavoriteButton";
 
 const RecipeDetails = async ({ params }) => {
   const user = await getUserSession();
-  console.log(user);
 
   const { id } = await params;
   const recipe = await fetchData(`/recipes/${id}`);
-
+  const favorites = await fetchData(`/favorites?userEmail=${user.email}`);
+  const favoriteInfo = favorites?.data?.find(
+    (favorite) => favorite.recipeId === recipe._id,
+  );
   const {
     recipeName,
     recipeImage,
@@ -86,9 +88,12 @@ const RecipeDetails = async ({ params }) => {
               <Icon data={NodesRight} size={17} />
             </button>
 
-            <button className="ml-auto hover:text-danger">
-              <Icon data={Flag} size={17} />
-            </button>
+            <FavoriteButton
+              recipe={recipe}
+              user={user}
+              initiallyFavorite={!!favoriteInfo}
+              favoriteId={favoriteInfo?._id}
+            />
           </div>
 
           <button className="mt-8 flex w-full max-w-md items-center justify-between rounded bg-accent px-6 py-4 text-sm font-bold text-accent-foreground shadow-lg transition hover:bg-accent-hover">
