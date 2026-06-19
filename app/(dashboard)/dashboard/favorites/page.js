@@ -16,7 +16,7 @@ const FavoritesPage = async () => {
     <section className="min-h-screen bg-background px-6 py-14 text-foreground lg:px-16">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16">
-          <h1 className="font-serif text-5xl md:text-6xl">My Favorites</h1>
+          <h1 className="font-serif text-5xl md:text-5xl">My Favorites</h1>
           <p className="mt-4 max-w-xl text-sm leading-6 text-surface-secondary-foreground">
             Your personal collection of favorite recipes. Save the dishes you
             love, revisit them anytime, and discover inspiration for your next

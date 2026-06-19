@@ -13,14 +13,14 @@ const ManageUsersPage = async () => {
   const stats = usersData?.stats || {};
 
   return (
-    <section className="min-h-screen bg-background px-6 py-16 text-foreground lg:px-16">
+    <section className="min-h-screen bg-background px-6 py-10 text-foreground lg:px-16">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16">
-          <h1 className="font-serif text-5xl leading-tight md:text-6xl">
+          <h1 className="font-serif text-5xl leading-tight md:text-5xl">
             Manage Users
           </h1>
 
-          <p className="mt-4 max-w-2xl text-base leading-7 text-surface-secondary-foreground">
+          <p className="mt-3 max-w-2xl text-base leading-7 text-surface-secondary-foreground">
             Monitor user activity, manage roles and permissions, and maintain a
             secure and engaging culinary community across the RecipeHub
             platform.

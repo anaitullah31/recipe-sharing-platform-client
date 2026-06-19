@@ -12,14 +12,14 @@ const ManageReportsPage = async () => {
   const reports = data?.data || [];
 
   return (
-    <section className="min-h-screen bg-background px-6 py-16 text-foreground lg:px-16">
+    <section className="min-h-screen bg-background px-6 py-10 text-foreground lg:px-16">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-start">
           <div>
-            <h1 className="font-serif text-5xl leading-tight md:text-6xl">
+            <h1 className="font-serif text-5xl leading-tight md:text-5xl">
               Manage Reports
             </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-surface-secondary-foreground">
+            <p className="mt-3 max-w-2xl text-base leading-7 text-surface-secondary-foreground">
               Review and act upon community-reported content to maintain the
               culinary excellence and integrity of the RecipeHub platform.
             </p>
