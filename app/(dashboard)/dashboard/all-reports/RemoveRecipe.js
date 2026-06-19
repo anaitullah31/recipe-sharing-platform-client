@@ -3,10 +3,10 @@
 import { serverMutation } from "@/app/lib/core/server";
 import { useRouter } from "next/navigation";
 
-const RemoveRecipe = ({ recipeId, status }) => {
+const RemoveRecipe = ({ reportId, status }) => {
   const router = useRouter();
   const handleRemoveRecipe = async () => {
-    const data = await serverMutation(`/recipes/${recipeId}`, {}, "DELETE");
+    const data = await serverMutation(`/recipes/${reportId}`, {}, "DELETE");
     if (data.success) {
       router.refresh(); // Re-fetch server component data
     }

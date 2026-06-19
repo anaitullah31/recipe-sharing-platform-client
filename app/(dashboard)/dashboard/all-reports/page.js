@@ -4,12 +4,12 @@ import { ChevronLeft, ChevronRight } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { fetchData } from "@/app/lib/core/server";
 import RemoveRecipe from "./RemoveRecipe";
+import DismissReport from "./DismissReport";
 
 const ManageReportsPage = async () => {
   const data = await fetchData("/reports");
 
   const reports = data?.data || [];
-  console.log(reports);
 
   return (
     <section className="min-h-screen bg-background px-6 py-16 text-foreground lg:px-16">
@@ -130,12 +130,14 @@ const ManageReportsPage = async () => {
 
                 {/* Actions */}
                 <div className="flex items-center gap-3 md:justify-end">
-                  <button className="cursor-pointer border border-border px-4 py-2 text-xs font-semibold text-surface-secondary-foreground transition hover:bg-surface-hover">
+                  {/* <button className="cursor-pointer border border-border px-4 py-2 text-xs font-semibold text-surface-secondary-foreground transition hover:bg-surface-hover">
                     Dismiss
-                  </button>
+                  </button> */}
+                  <DismissReport reportId={report._id}
+                    status={report.status} />
 
                   <RemoveRecipe
-                    recipeId={report.recipeId}
+                    reportId={report.recipeId}
                     status={report.status}
                   />
                 </div>
