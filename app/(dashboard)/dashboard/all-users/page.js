@@ -105,9 +105,10 @@ const ManageUsersPage = async () => {
           </div>
 
           {/* Header */}
-          <div className="hidden grid-cols-[2fr_1fr_1fr_1fr_1fr] border-b border-separator bg-surface-secondary px-6 py-4 text-xs font-bold uppercase tracking-wider md:grid">
+          <div className="hidden grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] border-b border-separator bg-surface-secondary px-6 py-4 text-xs font-bold uppercase tracking-wider md:grid">
             <span>User</span>
             <span>Role</span>
+            <span>Subscription Plan</span>
             <span>Status</span>
             <span>Joined Date</span>
             <span className="text-right">Actions</span>
@@ -117,7 +118,7 @@ const ManageUsersPage = async () => {
           {users.map((user) => (
             <div
               key={user._id}
-              className="grid gap-4 border-b border-separator px-6 py-5 md:grid-cols-[2fr_1fr_1fr_1fr_1fr] md:items-center"
+              className="grid gap-4 border-b border-separator px-6 py-5 md:grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] md:items-center"
             >
               <div className="flex items-center gap-4">
                 <div className="relative h-12 w-12 overflow-hidden rounded-full">
@@ -140,6 +141,18 @@ const ManageUsersPage = async () => {
               <div className="capitalize">
                 <span className="bg-surface-secondary px-3 py-1 text-xs">
                   {user.role}
+                </span>
+              </div>
+
+              <div className="capitalize">
+                <span
+                  className={`px-3 py-1 text-xs font-medium ${
+                    user.plan === "premium"
+                      ? "bg-warning/10 text-warning"
+                      : "bg-surface-secondary text-surface-secondary-foreground"
+                  }`}
+                >
+                  {user.plan || "free"}
                 </span>
               </div>
 
