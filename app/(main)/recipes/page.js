@@ -2,8 +2,8 @@ import { fetchData } from "@/app/lib/core/server";
 import RecipeCard from "./RecipeCard";
 
 const RecipePage = async () => {
-  const recipes = await fetchData("/recipes");
-console.log(recipes, "RECIPE");
+  const recipesData = await fetchData("/recipes");
+  const recipes = recipesData?.data || [];
 
   return (
     <div className="max-w-7xl mx-auto">
