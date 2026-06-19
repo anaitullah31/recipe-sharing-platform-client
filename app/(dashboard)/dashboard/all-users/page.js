@@ -2,9 +2,12 @@ import Image from "next/image";
 import { Icon } from "@gravity-ui/uikit";
 import { ArrowDownToLine, Funnel, Magnifier } from "@gravity-ui/icons";
 import { fetchData } from "@/app/lib/core/server";
+import BlockButton from "./BlockButton";
+import { getUserSession } from "@/app/lib/core/session";
 
 const ManageUsersPage = async () => {
   const usersData = await fetchData("/users");
+  const currentUser = await getUserSession();
 
   const users = usersData?.data || [];
   const stats = usersData?.stats || {};
@@ -134,19 +137,23 @@ const ManageUsersPage = async () => {
                 </div>
               </div>
 
-              <div>
+              <div className="capitalize">
                 <span className="bg-surface-secondary px-3 py-1 text-xs">
                   {user.role}
                 </span>
               </div>
 
-              <div>
+              <div className="capitalize">
                 <span
-                  className={`flex items-center gap-2 text-sm ${
-                    user.status === "active" ? "text-success" : "text-warning"
+                  className={`inline-flex items-center gap-2 ${
+                    user.status === "active" ? "text-success" : "text-danger"
                   }`}
                 >
-                  <span className="h-2 w-2 rounded-full bg-current" />
+                  <span
+                    className={`h-2 w-2 rounded-full ${
+                      user.status === "active" ? "bg-success" : "bg-danger"
+                    }`}
+                  />
                   {user.status}
                 </span>
               </div>
@@ -156,9 +163,7 @@ const ManageUsersPage = async () => {
               </div>
 
               <div className="flex justify-end gap-2">
-                <button className="cursor-pointer border border-danger px-4 py-2 text-xs text-danger hover:bg-danger hover:text-danger-foreground">
-                  Block
-                </button>
+                <BlockButton currentUser={currentUser} user={user} />
               </div>
             </div>
           ))}
