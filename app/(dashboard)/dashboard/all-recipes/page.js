@@ -16,7 +16,7 @@ import FeaturedButton from "./FeaturedButton";
 
 const ManageRecipesPage = async () => {
   const data = await fetchData("/recipes");
-  const recipes = data || [];
+  const recipes = data?.data || [];
 
   const totalRecipes = recipes.length;
   const publishedRecipes = recipes.filter(
