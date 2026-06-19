@@ -9,10 +9,10 @@ import {
   Plus,
   SquareChartColumn,
   Star,
-  TrashBin,
 } from "@gravity-ui/icons";
 import { fetchData } from "@/app/lib/core/server";
 import DeleteRecipe from "./DeleteRecipe";
+import FeaturedButton from "./FeaturedButton";
 
 const ManageRecipesPage = async () => {
   const data = await fetchData("/recipes");
@@ -206,12 +206,7 @@ const ManageRecipesPage = async () => {
                 </Link>
 
                 {/* Featured */}
-                <button
-                  className="cursor-pointer text-warning transition hover:text-accent"
-                  title="Toggle Featured"
-                >
-                  <Icon data={Star} size={16} />
-                </button>
+                <FeaturedButton recipe={recipe} />
 
                 {/* Delete */}
                 <DeleteRecipe recipeId={recipe._id} />

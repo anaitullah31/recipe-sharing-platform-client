@@ -8,7 +8,7 @@ import { useState } from "react";
 const LikeButton = ({ recipe, userEmail }) => {
   const [likesCount, setLikesCount] = useState(recipe?.likesCount || 0);
   const [liked, setLiked] = useState(
-    recipe?.likedBy?.includes(userEmail) || false,
+    recipe?.likedBy?.includes(userEmail) || false
   );
   const [loading, setLoading] = useState(false);
 
@@ -19,14 +19,19 @@ const LikeButton = ({ recipe, userEmail }) => {
     const previousCount = likesCount;
 
     setLoading(true);
+
+    // Optimistic update
     setLiked(!liked);
     setLikesCount(liked ? likesCount - 1 : likesCount + 1);
 
     try {
       const data = await serverMutation(
         `/recipes/${recipe._id}`,
-        { userEmail },
-        "PATCH",
+        {
+          action: "like",
+          userEmail,
+        },
+        "PATCH"
       );
 
       if (data.success) {
@@ -37,6 +42,8 @@ const LikeButton = ({ recipe, userEmail }) => {
         setLikesCount(previousCount);
       }
     } catch (error) {
+      console.error(error);
+
       setLiked(previousLiked);
       setLikesCount(previousCount);
     } finally {
@@ -48,8 +55,10 @@ const LikeButton = ({ recipe, userEmail }) => {
     <button
       onClick={handleLike}
       disabled={loading}
-      className={`flex cursor-pointer items-center gap-2 transition hover:text-danger disabled:opacity-60 ${
-        liked ? "text-danger" : ""
+      className={`flex cursor-pointer items-center gap-2 transition disabled:opacity-60 ${
+        liked
+          ? "text-danger"
+          : "hover:text-danger"
       }`}
     >
       <Icon data={Heart} size={17} />
