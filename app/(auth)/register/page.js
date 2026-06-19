@@ -30,6 +30,7 @@ export default function RegisterPage() {
       password: formData.get("password"),
       role: formData.get("role"),
       plan: "free",
+      status: "active",
     });
     if (data) {
       redirect("/");
