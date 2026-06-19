@@ -19,7 +19,8 @@ const RecipeDetails = async ({ params }) => {
   const user = await getUserSession();
 
   const { id } = await params;
-  const recipe = await fetchData(`/recipes/${id}`);
+  const data = await fetchData(`/recipes/${id}`);
+  const recipe = data?.data
   const favorites = await fetchData(`/favorites?userEmail=${user.email}`);
   const favoriteInfo = favorites?.data?.find(
     (favorite) => favorite.recipeId === recipe._id,
