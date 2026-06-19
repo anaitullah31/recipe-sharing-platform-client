@@ -12,6 +12,7 @@ import {
   TrashBin,
 } from "@gravity-ui/icons";
 import { fetchData } from "@/app/lib/core/server";
+import DeleteRecipe from "./DeleteRecipe";
 
 const ManageRecipesPage = async () => {
   const data = await fetchData("/recipes");
@@ -213,12 +214,7 @@ const ManageRecipesPage = async () => {
                 </button>
 
                 {/* Delete */}
-                <button
-                  className="cursor-pointer text-danger transition hover:opacity-80"
-                  title="Delete Recipe"
-                >
-                  <Icon data={TrashBin} size={16} />
-                </button>
+                <DeleteRecipe recipeId={recipe._id} />
               </div>
             </div>
           ))}
