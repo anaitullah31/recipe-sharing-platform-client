@@ -158,13 +158,13 @@ export function UserTable({ users = [] }) {
     <div className="">
       <section className="space-y-6">
         <div>
-          <p className="text-sm font-medium text-[var(--accent)]">
+          <p className="text-sm font-medium text-accent">
             Admin Dashboard
           </p>
-          <h1 className="mt-2 text-3xl font-bold text-[var(--foreground)]">
+          <h1 className="mt-2 text-3xl font-bold text-foreground">
             Manage Users
           </h1>
-          <p className="mt-2 max-w-2xl text-sm text-[var(--surface-tertiary-foreground)]">
+          <p className="mt-2 max-w-2xl text-sm text-surface-tertiary-foreground">
             Manage registered users, review their roles, account status, and
             take necessary actions.
           </p>
@@ -176,7 +176,7 @@ export function UserTable({ users = [] }) {
         <Table.ScrollContainer>
           <Table.Content
             aria-label="Users table"
-            className="min-w-[600px]"
+            className="min-w-150"
             sortDescriptor={sortDescriptor}
             onSortChange={(descriptor) =>
               setSorting(toSortingState(descriptor))
