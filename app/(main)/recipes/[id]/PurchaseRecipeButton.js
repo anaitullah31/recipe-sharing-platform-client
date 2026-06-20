@@ -1,6 +1,5 @@
 "use client";
 const PurchaseRecipeButton = ({ recipe, user }) => {
-    console.log(recipe, user);
     
   const handleRecipePurchase = async () => {
     const res = await fetch("/api/subscription", {
