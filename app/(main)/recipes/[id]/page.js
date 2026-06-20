@@ -14,13 +14,14 @@ import LikeButton from "./LikeButton";
 import { getUserSession } from "@/app/lib/core/session";
 import FavoriteButton from "./FavoriteButton";
 import ReportButton from "./ReportModal";
+import PurchaseRecipeButton from "./PurchaseRecipeButton";
 
 const RecipeDetails = async ({ params }) => {
   const user = await getUserSession();
 
   const { id } = await params;
   const data = await fetchData(`/recipes/${id}`);
-  const recipe = data?.data
+  const recipe = data?.data;
   const favorites = await fetchData(`/favorites?userEmail=${user.email}`);
   const favoriteInfo = favorites?.data?.find(
     (favorite) => favorite.recipeId === recipe._id,
@@ -97,10 +98,7 @@ const RecipeDetails = async ({ params }) => {
             <ReportButton recipe={recipe} user={user} />
           </div>
 
-          <button className="mt-8 flex w-full max-w-md items-center justify-between rounded bg-accent px-6 py-4 text-sm font-bold text-accent-foreground shadow-lg transition hover:bg-accent-hover">
-            <span>Purchase Full Recipe Guide</span>
-            <span className="rounded bg-(--surface)/20 px-3 py-1">$4.99</span>
-          </button>
+          <PurchaseRecipeButton recipe={recipe} user={user} />
 
           <p className="mt-3 max-w-md text-center text-xs italic text-surface-secondary-foreground">
             Includes video masterclass & sourcing guide
