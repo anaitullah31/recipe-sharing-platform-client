@@ -15,6 +15,7 @@ import {
   TextField,
 } from "@heroui/react";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const ReportButton = ({ recipe, user }) => {
   const [reason, setReason] = useState("Spam");
@@ -41,11 +42,25 @@ const ReportButton = ({ recipe, user }) => {
       const data = await serverMutation("/reports", reportData, "POST");
 
       if (data.success) {
-        alert("Report submitted successfully");
+        await Swal.fire({
+          icon: "success",
+          title: "Report Received",
+          html: `
+    <p>Your report has been submitted successfully.</p>
+    <p class="mt-2">Our moderation team will investigate this recipe and take action if necessary.</p>
+  `,
+          confirmButtonText: "Continue",
+          confirmButtonColor: "#a45a00",
+        });
         setComment("");
         setReason("Spam");
       } else {
-        alert(data.message || "Failed to submit report");
+        Swal.fire({
+          title: "Submission Failed",
+          text: data.message || "Failed to submit report",
+          icon: "error",
+          confirmButtonColor: "#dc2626",
+        });
       }
     } catch (error) {
       console.error(error);

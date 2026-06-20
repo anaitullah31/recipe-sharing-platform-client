@@ -5,10 +5,11 @@ import { Icon } from "@gravity-ui/uikit";
 import { fetchData } from "@/app/lib/core/server";
 import RemoveRecipe from "./RemoveRecipe";
 import DismissReport from "./DismissReport";
+import { requireRole } from "@/app/lib/core/session";
 
 const ManageReportsPage = async () => {
   const data = await fetchData("/reports");
-
+  await requireRole("admin");
   const reports = data?.data || [];
 
   return (
@@ -133,8 +134,7 @@ const ManageReportsPage = async () => {
                   {/* <button className="cursor-pointer border border-border px-4 py-2 text-xs font-semibold text-surface-secondary-foreground transition hover:bg-surface-hover">
                     Dismiss
                   </button> */}
-                  <DismissReport reportId={report._id}
-                    status={report.status} />
+                  <DismissReport reportId={report._id} status={report.status} />
 
                   <RemoveRecipe
                     reportId={report.recipeId}

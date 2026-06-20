@@ -10,16 +10,18 @@ import {
   SquareChartColumn,
   Star,
 } from "@gravity-ui/icons";
-import { fetchData } from "@/app/lib/core/server";
 import { getUserSession } from "@/app/lib/core/session";
 import DeleteRecipe from "../all-recipes/DeleteRecipe";
+import { getRecipesByUserEmail } from "@/app/lib/api/recipes";
 
 const MyRecipes = async () => {
   const user = await getUserSession();
 
-  const data = await fetchData(`/recipes?authorEmail=${user?.email}`);
+  if (!user?.email) {
+    redirect("/login");
+  }
 
-  const recipes = data?.data || data || [];
+  const recipes = await getRecipesByUserEmail(user?.email);
 
   const totalRecipes = recipes.length;
 

@@ -24,6 +24,10 @@ export default function MainNavbar() {
       label: "Browse Recipes",
       href: "/recipes",
     },
+    {
+      label: "Pricing",
+      href: "/pricing",
+    },
   ];
 
   if(user?.email){

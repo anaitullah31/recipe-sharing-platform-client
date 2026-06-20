@@ -5,14 +5,25 @@ import { TrashBin } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const DeleteFavoriteButton = ({ favoriteId }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const handleDeleteFavorite = async () => {
-    const confirmDelete = confirm("Remove this recipe from favorites?");
-    if (!confirmDelete) return;
+    const result = await Swal.fire({
+      title: "Remove Favorite?",
+      text: "This recipe will be removed from your favorites list.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Remove",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       setLoading(true);
@@ -24,13 +35,31 @@ const DeleteFavoriteButton = ({ favoriteId }) => {
       );
 
       if (data.success) {
+        await Swal.fire({
+          title: "Removed!",
+          text: "Recipe removed from your favorites.",
+          icon: "success",
+          confirmButtonColor: "#a45a00",
+        });
+
         router.refresh();
       } else {
-        alert(data.message || "Failed to remove favorite");
+        Swal.fire({
+          title: "Failed",
+          text: data.message || "Failed to remove favorite",
+          icon: "error",
+          confirmButtonColor: "#dc2626",
+        });
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to remove favorite");
+
+      Swal.fire({
+        title: "Error",
+        text: "Failed to remove favorite",
+        icon: "error",
+        confirmButtonColor: "#dc2626",
+      });
     } finally {
       setLoading(false);
     }

@@ -1,16 +1,56 @@
 "use client";
 
+import Swal from "sweetalert2";
 import { serverMutation } from "@/app/lib/core/server";
 import { useRouter } from "next/navigation";
 
 const RemoveRecipe = ({ reportId, status }) => {
   const router = useRouter();
+
   const handleRemoveRecipe = async () => {
-    const data = await serverMutation(`/recipes/${reportId}`, {}, "DELETE");
-    if (data.success) {
-      router.refresh(); // Re-fetch server component data
+    const result = await Swal.fire({
+      title: "Remove Recipe?",
+      text: "This recipe will be permanently deleted and cannot be recovered.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Remove It",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const data = await serverMutation(`/recipes/${reportId}`, {}, "DELETE");
+
+      if (data.success) {
+        await Swal.fire({
+          title: "Removed!",
+          text: "Recipe has been removed successfully.",
+          icon: "success",
+          confirmButtonColor: "#a45a00",
+        });
+
+        router.refresh();
+      } else {
+        Swal.fire({
+          title: "Failed",
+          text: data.message || "Failed to remove recipe.",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+
+      Swal.fire({
+        title: "Error",
+        text: "Something went wrong.",
+        icon: "error",
+      });
     }
   };
+
   return (
     <button
       onClick={handleRemoveRecipe}
