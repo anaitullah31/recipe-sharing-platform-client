@@ -60,7 +60,7 @@ const FavoritesPage = async () => {
                         {favorite.recipeName}
                       </h3>
                       <p className="mt-1 text-xs font-semibold text-accent">
-                        {favorite.category} • {favorite.preparationTime} mins
+                        {favorite.category}
                       </p>
                     </div>
                   </div>

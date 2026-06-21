@@ -1,75 +1,67 @@
 "use client";
-import { Heart } from "@gravity-ui/icons";
-import { Card, Chip } from "@heroui/react";
+
 import Image from "next/image";
 import Link from "next/link";
+import { Heart } from "@gravity-ui/icons";
+import { Icon } from "@gravity-ui/uikit";
 
 const RecipeCard = ({ recipe }) => {
   const {
+    _id,
     recipeName,
     recipeImage,
-    likesCount,
-    authorName,
-    cuisineType,
     category,
-    preparationTime,
-    _id,
+    likesCount = 0,
+    price = 0,
+    cuisineType,
   } = recipe;
 
   return (
-    <Card className="w-full overflow-hidden rounded-md">
-      <div className="relative h-55 w-full rounded-md overflow-hidden">
-        <Image
-          src={recipeImage}
-          alt={recipeName}
-          width={500}
-          height={300}
-          className="h-55 w-full object-cover transition duration-300 hover:scale-105"
-        />
+    <Link href={`/recipes/${_id}`} className="group block h-full">
+      <article className="h-full bg-surface p-4">
+        <div className="relative overflow-hidden">
+          <Image
+            src={recipeImage}
+            alt={recipeName}
+            width={500}
+            height={250}
+            className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+        </div>
 
-        <button className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 backdrop-blur">
-          <Heart size={18} />
-        </button>
-      </div>
+        <div className="space-y-3 pt-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+            {category}
+          </p>
 
-      <div className="flex flex-1 flex-col gap-3 p-4">
-        <Card.Header className="flex flex-col items-start gap-2 p-0">
-          <div className="flex flex-wrap gap-2">
-            <Chip color="warning" variant="flat" size="sm">
-              {category}
-            </Chip>
+          <h3 className="font-serif text-2xl leading-tight text-foreground transition-colors group-hover:text-accent">
+            {recipeName}
+          </h3>
 
-            <Chip color="success" variant="flat" size="sm">
-              {cuisineType}
-            </Chip>
+          <p className="line-clamp-2 text-sm text-surface-secondary-foreground">
+            Explore authentic {cuisineType} flavors with detailed preparation
+            techniques and professional cooking guidance.
+          </p>
+
+          <div className="flex items-center justify-between border-t border-border pt-4">
+            <div className="flex items-center gap-2">
+              <Icon data={Heart} size={16} />
+              <span className="text-sm font-medium">
+                {likesCount.toLocaleString()}
+              </span>
+            </div>
+
+            <div className="text-right">
+              <p className="text-xs uppercase tracking-widest text-surface-secondary-foreground">
+                Price
+              </p>
+
+              <p className="text-lg font-bold text-foreground">${price}</p>
+            </div>
           </div>
-
-          <Card.Title>{recipeName}</Card.Title>
-
-          <Card.Description>
-            Prepared by {authorName}. This recipe takes approximately{" "}
-            {preparationTime || 30} minutes to prepare.
-          </Card.Description>
-        </Card.Header>
-
-        <Card.Footer className="mt-auto flex items-center justify-between p-0 pt-2">
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold text-foreground">
-              {likesCount}
-            </span>
-            <span className="text-xs text-muted-foreground">Likes</span>
-          </div>
-
-          <Link
-            href={`/recipes/${_id}`}
-            className=" inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent  text-white font-medium hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300
-  "
-          >
-            View Recipe
-          </Link>
-        </Card.Footer>
-      </div>
-    </Card>
+        </div>
+      </article>
+    </Link>
   );
 };
 

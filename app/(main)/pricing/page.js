@@ -14,7 +14,7 @@ const PricingPage = async () => {
   const premiumPlan = plans.find((plan) => plan.slug === "premium");
 
   return (
-    <section className="min-h-screen bg-background px-6 py-20 text-foreground lg:px-16">
+    <section className="min-h-screen bg-background px-6 py-12 text-foreground lg:px-16">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto mb-14 max-w-3xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-accent">
