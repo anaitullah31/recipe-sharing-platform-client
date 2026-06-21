@@ -40,12 +40,15 @@ const ProfileUpdateForm = ({ user }) => {
       const data = await res.json();
 
       if (data.success) {
-        setImage(data.data.url);
+        const uploadedUrl = data.data.url;
+
+        setImage(uploadedUrl);
+        setPreview(uploadedUrl);
       } else {
         Swal.fire({
           icon: "error",
           title: "Update Failed",
-          text: error.message || "Image upload failed",
+          text: "Image upload failed",
         });
         setPreview(user?.image || "");
       }
@@ -58,6 +61,7 @@ const ProfileUpdateForm = ({ user }) => {
       setPreview(user?.image || "");
     } finally {
       setUploading(false);
+      URL.revokeObjectURL(localPreview);
     }
   };
 
@@ -65,11 +69,10 @@ const ProfileUpdateForm = ({ user }) => {
     e.preventDefault();
 
     if (uploading) {
-      alert("Image is still uploading. Please wait.");
       Swal.fire({
         icon: "error",
         title: "Image is uploading",
-        text: error.message || "Image is still uploading. Please wait.",
+        text: "Image is still uploading. Please wait.",
       });
       return;
     }
@@ -78,7 +81,7 @@ const ProfileUpdateForm = ({ user }) => {
       Swal.fire({
         icon: "error",
         title: "Required field",
-        text: error.message || "Name is required",
+        text: "Name is required",
       });
       return;
     }
@@ -86,10 +89,12 @@ const ProfileUpdateForm = ({ user }) => {
     try {
       setLoading(true);
 
-      const { error } = await authClient.updateUser({
+      const updatedUser = {
         name: name.trim(),
         image,
-      });
+      };
+
+      const { error } = await authClient.updateUser(updatedUser);
 
       if (error) {
         Swal.fire({
@@ -100,7 +105,14 @@ const ProfileUpdateForm = ({ user }) => {
         return;
       }
 
-      router.refresh("/dashboard/profile");
+      window.dispatchEvent(
+        new CustomEvent("profile-updated", {
+          detail: updatedUser,
+        }),
+      );
+
+      router.refresh();
+
       Swal.fire({
         icon: "success",
         title: "Profile Updated",
@@ -108,7 +120,6 @@ const ProfileUpdateForm = ({ user }) => {
         confirmButtonText: "Awesome",
       });
     } catch (error) {
-      console.error(error);
       Swal.fire({
         icon: "error",
         title: "Update Failed",
@@ -203,7 +214,7 @@ const ProfileUpdateForm = ({ user }) => {
       <button
         type="submit"
         disabled={loading || uploading}
-        className="bg-accent px-8 py-3 cursor-pointer text-xs font-bold uppercase text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
+        className="cursor-pointer bg-accent px-8 py-3 text-xs font-bold uppercase text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
       >
         {uploading
           ? "Uploading Image..."
