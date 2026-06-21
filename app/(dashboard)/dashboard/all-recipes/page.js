@@ -232,7 +232,7 @@ const ManageRecipesPage = async ({ searchParams }) => {
           <Pagination
             pagination={pagination}
             itemName="recipes"
-            limitOptions={[1, 5, 8, 10, 20]}
+            limitOptions={[5, 8, 10, 20]}
           />
         </div>
       </div>

@@ -1,10 +1,20 @@
 import { fetchData } from "@/app/lib/core/server";
 import RecipeCard from "./RecipeCard";
 import { Magnifier } from "@gravity-ui/icons";
+import Pagination from "@/app/components/shared/Pagination";
 
-const RecipePage = async () => {
-  const recipesData = await fetchData("/recipes");
+const RecipePage = async ({ searchParams }) => {
+  const params = await searchParams;
+
+  const currentPage = Number(params?.page) || 1;
+  const limit = Number(params?.limit) || 8;
+
+  const recipesData = await fetchData(
+    `/recipes?page=${currentPage}&limit=${limit}`
+  );
+
   const recipes = recipesData?.data || [];
+  const pagination = recipesData?.pagination || {};
 
   return (
     <main className="min-h-screen bg-background">
@@ -66,6 +76,16 @@ const RecipePage = async () => {
             <p className="mt-2 text-sm text-surface-secondary-foreground">
               Please try again later.
             </p>
+          </div>
+        )}
+
+        {recipes.length > 0 && (
+          <div className="mt-12 overflow-hidden border border-border bg-surface">
+            <Pagination
+              pagination={pagination}
+              itemName="recipes"
+              limitOptions={[8, 12, 16, 20]}
+            />
           </div>
         )}
       </section>
