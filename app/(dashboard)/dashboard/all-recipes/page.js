@@ -3,8 +3,6 @@ import Link from "next/link";
 import { Icon } from "@gravity-ui/uikit";
 import {
   CheckShape,
-  ChevronLeft,
-  ChevronRight,
   Pencil,
   Plus,
   SquareChartColumn,
@@ -14,15 +12,27 @@ import { fetchData } from "@/app/lib/core/server";
 import DeleteRecipe from "./DeleteRecipe";
 import FeaturedButton from "./FeaturedButton";
 import { requireRole } from "@/app/lib/core/session";
+import Pagination from "@/app/components/shared/Pagination";
 
-const ManageRecipesPage = async () => {
-  const data = await fetchData("/recipes");
-  const recipes = data?.data || [];
+const ManageRecipesPage = async ({ searchParams }) => {
   await requireRole("admin");
-  const totalRecipes = recipes.length;
+
+  const params = await searchParams;
+
+  const currentPage = Number(params?.page) || 1;
+  const limit = Number(params?.limit) || 8;
+
+  const data = await fetchData(`/recipes?page=${currentPage}&limit=${limit}`);
+
+  const recipes = data?.data || [];
+  const pagination = data?.pagination || {};
+
+  const totalRecipes = pagination?.total || 0;
+
   const publishedRecipes = recipes.filter(
     (recipe) => recipe.status === "published",
   ).length;
+
   const featuredRecipes = recipes.filter((recipe) => recipe.isFeatured).length;
 
   return (
@@ -59,7 +69,7 @@ const ManageRecipesPage = async () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
-                  Published
+                  Published On This Page
                 </p>
                 <h2 className="mt-2 font-serif text-4xl">{publishedRecipes}</h2>
               </div>
@@ -71,7 +81,7 @@ const ManageRecipesPage = async () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
-                  Featured
+                  Featured On This Page
                 </p>
                 <h2 className="mt-2 font-serif text-4xl text-link">
                   {featuredRecipes}
@@ -84,23 +94,23 @@ const ManageRecipesPage = async () => {
 
         <div className="overflow-hidden border border-border bg-surface shadow-sm">
           <div className="flex flex-col gap-4 border-b border-separator bg-surface-secondary p-5 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-3">
-              <select className="bg-surface px-4 py-2 text-xs font-semibold outline-none border border-border rounded">
+            <div className="flex flex-wrap items-center gap-3">
+              <select className="rounded border border-border bg-surface px-4 py-2 text-xs font-semibold outline-none">
                 <option>All Chefs</option>
               </select>
 
-              <select className="bg-surface px-4 py-2 text-xs font-semibold outline-none border border-border rounded">
+              <select className="rounded border border-border bg-surface px-4 py-2 text-xs font-semibold outline-none">
                 <option>All Categories</option>
               </select>
 
-              <select className="bg-surface px-4 py-2 text-xs font-semibold outline-none border border-border rounded">
+              <select className="rounded border border-border bg-surface px-4 py-2 text-xs font-semibold outline-none">
                 <option>Status: All</option>
               </select>
 
               <input
                 type="text"
                 placeholder="Search recipe database..."
-                className="h-10 w-96 rounded border border-border bg-surface px-4 text-sm outline-none placeholder:text-surface-secondary-foreground focus:border-accent"
+                className="h-10 w-full rounded border border-border bg-surface px-4 text-sm outline-none placeholder:text-surface-secondary-foreground focus:border-accent md:w-96"
               />
             </div>
 
@@ -131,10 +141,8 @@ const ManageRecipesPage = async () => {
               <div className="flex items-center gap-4">
                 <div className="relative h-14 w-16 shrink-0 overflow-hidden rounded bg-surface-secondary">
                   <Image
-                    src={
-                      recipe.recipeImage || "/assests/recipe-placeholder.png"
-                    }
-                    alt={recipe.recipeName}
+                    src={recipe.recipeImage || "/assets/recipe-placeholder.png"}
+                    alt={recipe.recipeName || "Recipe image"}
                     fill
                     unoptimized
                     className="object-cover"
@@ -197,7 +205,6 @@ const ManageRecipesPage = async () => {
               </p>
 
               <div className="flex items-center justify-end gap-4">
-                {/* Edit */}
                 <Link
                   href={`/dashboard/edit-recipe/${recipe._id}`}
                   className="text-surface-secondary-foreground transition hover:text-accent"
@@ -206,42 +213,27 @@ const ManageRecipesPage = async () => {
                   <Icon data={Pencil} size={16} />
                 </Link>
 
-                {/* Featured */}
                 <FeaturedButton recipe={recipe} />
 
-                {/* Delete */}
                 <DeleteRecipe recipeId={recipe._id} />
               </div>
             </div>
           ))}
 
-          <div className="flex flex-col gap-4 border-t border-separator bg-surface-secondary px-6 py-5 md:flex-row md:items-center md:justify-between">
-            <p className="text-xs text-surface-secondary-foreground">
-              Showing 1-{recipes.length} of {totalRecipes} recipes
-            </p>
-
-            <div className="flex items-center gap-2">
-              <button className="flex h-9 w-9 cursor-pointer items-center justify-center border border-border bg-surface transition hover:bg-surface-hover">
-                <Icon data={ChevronLeft} size={14} />
-              </button>
-
-              <button className="flex h-9 w-9 cursor-pointer items-center justify-center bg-accent text-sm font-bold text-accent-foreground">
-                1
-              </button>
-
-              <button className="flex h-9 w-9 cursor-pointer items-center justify-center border border-border bg-surface text-sm transition hover:bg-surface-hover">
-                2
-              </button>
-
-              <button className="flex h-9 w-9 cursor-pointer items-center justify-center border border-border bg-surface text-sm transition hover:bg-surface-hover">
-                3
-              </button>
-
-              <button className="flex h-9 w-9 cursor-pointer items-center justify-center border border-border bg-surface transition hover:bg-surface-hover">
-                <Icon data={ChevronRight} size={14} />
-              </button>
+          {recipes.length === 0 && (
+            <div className="px-6 py-16 text-center">
+              <h3 className="font-serif text-2xl">No recipes found</h3>
+              <p className="mt-2 text-sm text-surface-secondary-foreground">
+                There are no recipes available right now.
+              </p>
             </div>
-          </div>
+          )}
+
+          <Pagination
+            pagination={pagination}
+            itemName="recipes"
+            limitOptions={[1, 5, 8, 10, 20]}
+          />
         </div>
       </div>
     </section>
