@@ -1,4 +1,5 @@
 import FeaturedSection from "../components/FeaturedSection";
+import PopularRecipesSection from "../components/PopularRecipesSection";
 import RecipeHero from "../components/RecipeHero";
 
 const HomePage = () => {
@@ -6,6 +7,7 @@ const HomePage = () => {
     <div>
       <RecipeHero />
       <FeaturedSection />
+      <PopularRecipesSection />
     </div>
   );
 };
