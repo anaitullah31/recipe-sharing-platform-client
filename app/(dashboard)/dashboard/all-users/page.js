@@ -1,16 +1,28 @@
 import Image from "next/image";
 import { Icon } from "@gravity-ui/uikit";
 import { ArrowDownToLine, Funnel, Magnifier } from "@gravity-ui/icons";
-import { fetchData, fetchSecureData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import BlockButton from "./BlockButton";
 import { getUserSession, requireRole } from "@/app/lib/core/session";
+import Pagination from "@/app/components/shared/Pagination";
 
-const ManageUsersPage = async () => {
-  const usersData = await fetchSecureData("/users");
-  const currentUser = await getUserSession();
+const ManageUsersPage = async ({ searchParams }) => {
   await requireRole("admin");
+
+  const params = await searchParams;
+
+  const currentPage = Number(params?.page) || 1;
+  const limit = Number(params?.limit) || 8;
+
+  const usersData = await fetchSecureData(
+    `/users?page=${currentPage}&limit=${limit}`,
+  );
+
+  const currentUser = await getUserSession();
+
   const users = usersData?.data || [];
   const stats = usersData?.stats || {};
+  const pagination = usersData?.pagination || {};
 
   return (
     <section className="min-h-screen bg-background px-6 py-10 text-foreground lg:px-16">
@@ -26,7 +38,7 @@ const ManageUsersPage = async () => {
             platform.
           </p>
         </div>
-        {/* Stats */}
+
         <div className="mb-8 grid gap-6 md:grid-cols-3">
           <div className="border border-border bg-surface p-6">
             <div className="flex items-center justify-between">
@@ -34,7 +46,9 @@ const ManageUsersPage = async () => {
                 <p className="text-xs uppercase text-surface-secondary-foreground">
                   Total Users
                 </p>
-                <h2 className="mt-2 font-serif text-4xl">{stats.totalUsers}</h2>
+                <h2 className="mt-2 font-serif text-4xl">
+                  {stats.totalUsers || 0}
+                </h2>
               </div>
 
               <div className="bg-surface-secondary p-3">👥</div>
@@ -48,7 +62,7 @@ const ManageUsersPage = async () => {
                   Active Users
                 </p>
                 <h2 className="mt-2 font-serif text-4xl">
-                  {stats.activeUsers}
+                  {stats.activeUsers || 0}
                 </h2>
               </div>
 
@@ -63,7 +77,9 @@ const ManageUsersPage = async () => {
                   New This Week
                 </p>
                 <div className="mt-2 flex items-center gap-2">
-                  <h2 className="font-serif text-4xl">+{stats.newThisWeek}</h2>
+                  <h2 className="font-serif text-4xl">
+                    +{stats.newThisWeek || 0}
+                  </h2>
                   <span className="text-xs text-success">Trending up</span>
                 </div>
               </div>
@@ -73,9 +89,7 @@ const ManageUsersPage = async () => {
           </div>
         </div>
 
-        {/* Table Card */}
         <div className="overflow-hidden border border-border bg-surface">
-          {/* Toolbar */}
           <div className="flex flex-col gap-4 border-b border-separator p-6 md:flex-row md:items-center md:justify-between">
             <div className="relative w-full md:max-w-md">
               <Icon
@@ -104,7 +118,6 @@ const ManageUsersPage = async () => {
             </div>
           </div>
 
-          {/* Header */}
           <div className="hidden grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] border-b border-separator bg-surface-secondary px-6 py-4 text-xs font-bold uppercase tracking-wider md:grid">
             <span>User</span>
             <span>Role</span>
@@ -114,18 +127,18 @@ const ManageUsersPage = async () => {
             <span className="text-right">Actions</span>
           </div>
 
-          {/* Users */}
           {users.map((user) => (
             <div
               key={user._id}
-              className="grid gap-4 border-b border-separator px-6 py-5 md:grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] md:items-center"
+              className="grid gap-4 border-b border-separator px-6 py-5 last:border-b-0 md:grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] md:items-center"
             >
               <div className="flex items-center gap-4">
                 <div className="relative h-12 w-12 overflow-hidden rounded-full">
                   <Image
-                    src={user.image || "/assests/profile.png"}
-                    alt={user.name}
+                    src={user.image || "/assets/profile.png"}
+                    alt={user.name || "User image"}
                     fill
+                    unoptimized
                     className="object-cover"
                   />
                 </div>
@@ -167,7 +180,7 @@ const ManageUsersPage = async () => {
                       user.status === "active" ? "bg-success" : "bg-danger"
                     }`}
                   />
-                  {user.status}
+                  {user.status || "active"}
                 </span>
               </div>
 
@@ -181,34 +194,22 @@ const ManageUsersPage = async () => {
             </div>
           ))}
 
-          {/* Pagination */}
-          <div className="flex flex-col gap-4 bg-surface-secondary px-6 py-5 md:flex-row md:items-center md:justify-between">
-            <p className="text-xs text-surface-secondary-foreground">
-              Showing 1 to 4 of 1,240 users
-            </p>
-
-            <div className="flex items-center gap-2">
-              <button className="h-9 w-9 border border-border bg-surface">
-                ‹
-              </button>
-
-              <button className="h-9 w-9 bg-accent text-accent-foreground">
-                1
-              </button>
-
-              <button className="h-9 w-9 border border-border bg-surface">
-                2
-              </button>
-
-              <button className="h-9 w-9 border border-border bg-surface">
-                3
-              </button>
-
-              <button className="h-9 w-9 border border-border bg-surface">
-                ›
-              </button>
+          {users.length === 0 && (
+            <div className="px-6 py-16 text-center">
+              <h3 className="font-serif text-2xl">No users found</h3>
+              <p className="mt-2 text-sm text-surface-secondary-foreground">
+                There are no users available right now.
+              </p>
             </div>
-          </div>
+          )}
+
+          {users.length > 0 && (
+            <Pagination
+              pagination={pagination}
+              itemName="users"
+              limitOptions={[5, 8, 10, 20]}
+            />
+          )}
         </div>
       </div>
     </section>

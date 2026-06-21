@@ -2,18 +2,14 @@ import { fetchData } from "@/app/lib/core/server";
 import { ArrowDown, Funnel } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import Pagination from "@/app/components/shared/Pagination";
-import { getUserSession } from "@/app/lib/core/session";
 
-const PaymentHistoryPage = async ({ searchParams }) => {
+const TransactionsHistoryPage = async ({ searchParams }) => {
   const params = await searchParams;
-  const user = await getUserSession();
 
   const currentPage = Number(params?.page) || 1;
   const limit = Number(params?.limit) || 8;
 
-  const data = await fetchData(
-    `/payments?userEmail=${user?.email}&page=${currentPage}&limit=${limit}`,
-  );
+  const data = await fetchData(`/payments?page=${currentPage}&limit=${limit}`);
 
   const payments = data?.data || [];
   const pagination = data?.pagination || {};
@@ -24,27 +20,31 @@ const PaymentHistoryPage = async ({ searchParams }) => {
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <h1 className="font-serif text-5xl">Payment History</h1>
+            <h1 className="font-serif text-5xl">Transaction Ledger</h1>
             <p className="mt-4 max-w-xl text-sm leading-6 text-surface-secondary-foreground">
-              View your premium membership payments and purchased recipe
-              transactions.
+              Review and oversee all financial activities within the RecipeHub
+              ecosystem. Access detailed records of subscriptions and recipe
+              purchases.
             </p>
           </div>
-          <SummaryCard
-            title="Total Spent"
-            value={`$${Number(stats.totalSpent || 0).toFixed(2)}`}
-            note="Your total payments"
-          />
-          <SummaryCard
-            title="Premium Payments"
-            value={stats.premiumPayments || 0}
-            note="Membership transactions"
-          />
-          <SummaryCard
-            title="Recipe Purchases"
-            value={stats.recipePurchases || 0}
-            note="Purchased recipes"
-          />
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            <SummaryCard
+              title="Gross Revenue"
+              value={`$${Number(stats.grossRevenue || 0).toFixed(2)}`}
+              note="+12.4% vs last period"
+            />
+            <SummaryCard
+              title="Active Subscriptions"
+              value={stats.activeSubscriptions || 0}
+              note="Premium members"
+            />
+            <SummaryCard
+              title="Successful Payments"
+              value={stats.successfulPayments || 0}
+              note="Paid transactions"
+              danger
+            />
+          </div>
         </div>
 
         <div className="mb-8 flex flex-col gap-4 border border-border bg-surface-secondary p-5 lg:flex-row lg:items-end lg:justify-between">
@@ -195,4 +195,4 @@ const SummaryCard = ({ title, value, note, danger }) => {
   );
 };
 
-export default PaymentHistoryPage;
+export default TransactionsHistoryPage;

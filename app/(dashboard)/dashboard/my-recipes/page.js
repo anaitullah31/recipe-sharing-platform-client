@@ -1,10 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Icon } from "@gravity-ui/uikit";
 import {
   CheckShape,
-  ChevronLeft,
-  ChevronRight,
   Pencil,
   Plus,
   SquareChartColumn,
@@ -12,18 +11,29 @@ import {
 } from "@gravity-ui/icons";
 import { getUserSession } from "@/app/lib/core/session";
 import DeleteRecipe from "../all-recipes/DeleteRecipe";
-import { getRecipesByUserEmail } from "@/app/lib/api/recipes";
+import { fetchData } from "@/app/lib/core/server";
+import Pagination from "@/app/components/shared/Pagination";
 
-const MyRecipes = async () => {
+const MyRecipes = async ({ searchParams }) => {
   const user = await getUserSession();
 
   if (!user?.email) {
     redirect("/login");
   }
 
-  const recipes = await getRecipesByUserEmail(user?.email);
+  const params = await searchParams;
 
-  const totalRecipes = recipes.length;
+  const currentPage = Number(params?.page) || 1;
+  const limit = Number(params?.limit) || 8;
+
+  const data = await fetchData(
+    `/recipes?authorEmail=${user.email}&page=${currentPage}&limit=${limit}`,
+  );
+
+  const recipes = data?.data || [];
+  const pagination = data?.pagination || {};
+
+  const totalRecipes = pagination?.total || 0;
 
   const publishedRecipes = recipes.filter(
     (recipe) => recipe.status === "published",
@@ -67,7 +77,7 @@ const MyRecipes = async () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
-                  Published
+                  Published On This Page
                 </p>
                 <h2 className="mt-2 font-serif text-4xl">{publishedRecipes}</h2>
               </div>
@@ -79,7 +89,7 @@ const MyRecipes = async () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
-                  Featured
+                  Featured On This Page
                 </p>
                 <h2 className="mt-2 font-serif text-4xl text-link">
                   {featuredRecipes}
@@ -149,7 +159,7 @@ const MyRecipes = async () => {
                   <div className="relative h-14 w-16 shrink-0 overflow-hidden rounded bg-surface-secondary">
                     <Image
                       src={
-                        recipe.recipeImage || "/assests/recipe-placeholder.png"
+                        recipe.recipeImage || "/assets/recipe-placeholder.png"
                       }
                       alt={recipe.recipeName || "Recipe"}
                       fill
@@ -218,34 +228,19 @@ const MyRecipes = async () => {
                     <Icon data={Pencil} size={16} />
                   </Link>
 
-                  {/* <FeaturedButton recipe={recipe} /> */}
-
                   <DeleteRecipe recipeId={recipe._id} />
                 </div>
               </div>
             ))
           )}
 
-          <div className="flex flex-col gap-4 border-t border-separator bg-surface-secondary px-6 py-5 md:flex-row md:items-center md:justify-between">
-            <p className="text-xs text-surface-secondary-foreground">
-              Showing {recipes.length ? `1-${recipes.length}` : "0"} of{" "}
-              {totalRecipes} recipes
-            </p>
-
-            <div className="flex items-center gap-2">
-              <button className="flex h-9 w-9 cursor-pointer items-center justify-center border border-border bg-surface transition hover:bg-surface-hover">
-                <Icon data={ChevronLeft} size={14} />
-              </button>
-
-              <button className="flex h-9 w-9 cursor-pointer items-center justify-center bg-accent text-sm font-bold text-accent-foreground">
-                1
-              </button>
-
-              <button className="flex h-9 w-9 cursor-pointer items-center justify-center border border-border bg-surface transition hover:bg-surface-hover">
-                <Icon data={ChevronRight} size={14} />
-              </button>
-            </div>
-          </div>
+          {recipes.length > 0 && (
+            <Pagination
+              pagination={pagination}
+              itemName="recipes"
+              limitOptions={[5, 8, 10, 20]}
+            />
+          )}
         </div>
       </div>
     </section>

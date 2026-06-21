@@ -1,16 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
-import { TrashBin, ArrowRight } from "@gravity-ui/icons";
+import { ArrowRight } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { getUserSession } from "@/app/lib/core/session";
 import { fetchData } from "@/app/lib/core/server";
 import DeleteFavoriteButton from "./DeleteFavoriteButton";
+import Pagination from "@/app/components/shared/Pagination";
 
-const FavoritesPage = async () => {
+const FavoritesPage = async ({ searchParams }) => {
   const user = await getUserSession();
 
-  const data = await fetchData(`/favorites?userEmail=${user?.email}`);
-  const favorites = data?.data;
+  const params = await searchParams;
+
+  const currentPage = Number(params?.page) || 1;
+  const limit = Number(params?.limit) || 8;
+
+  const data = await fetchData(
+    `/favorites?userEmail=${user?.email}&page=${currentPage}&limit=${limit}`,
+  );
+
+  const favorites = data?.data || [];
+  const pagination = data?.pagination || {};
 
   return (
     <section className="min-h-screen bg-background px-6 py-14 text-foreground lg:px-16">
@@ -24,12 +34,12 @@ const FavoritesPage = async () => {
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
-          <div className="rounded-lg border border-border bg-surface p-6 shadow-sm">
+        <div className="grid items-start gap-8 lg:grid-cols-[1fr_300px]">
+          <div className="self-start rounded-lg border border-border bg-surface p-6 shadow-sm">
             <div className="mb-8 flex items-center justify-between">
               <h2 className="font-serif text-2xl">Favorite Recipes</h2>
               <p className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
-                {favorites.length} items saved
+                {pagination?.total || 0} items saved
               </p>
             </div>
 
@@ -55,6 +65,7 @@ const FavoritesPage = async () => {
                         className="object-cover"
                       />
                     </div>
+
                     <div>
                       <h3 className="font-serif text-2xl leading-tight">
                         {favorite.recipeName}
@@ -87,6 +98,25 @@ const FavoritesPage = async () => {
                 </div>
               ))}
             </div>
+
+            {favorites.length === 0 && (
+              <div className="py-16 text-center">
+                <h3 className="font-serif text-2xl">No favorites found</h3>
+                <p className="mt-2 text-sm text-surface-secondary-foreground">
+                  You have not saved any favorite recipes yet.
+                </p>
+              </div>
+            )}
+
+            {favorites.length > 0 && (
+              <div className="-mx-6 -mb-6 mt-6 overflow-hidden rounded-b-lg">
+                <Pagination
+                  pagination={pagination}
+                  itemName="favorites"
+                  limitOptions={[5, 8, 10, 20]}
+                />
+              </div>
+            )}
           </div>
 
           <aside className="space-y-6">
@@ -124,6 +154,7 @@ const FavoritesPage = async () => {
                 src="https://images.unsplash.com/photo-1551218808-94e220e084d2"
                 alt="Editorial"
                 fill
+                unoptimized
                 className="object-cover"
               />
 

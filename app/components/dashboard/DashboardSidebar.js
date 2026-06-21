@@ -15,6 +15,7 @@ import {
   Persons,
   SquareListUl,
   ScalesUnbalanced,
+  TagDollar,
 } from "@gravity-ui/icons";
 import { authClient } from "@/app/lib/auth-client";
 import Image from "next/image";
@@ -44,6 +45,11 @@ export function DashboardSidebar() {
       icon: ScalesUnbalanced,
       label: "Manage Reports",
       href: "/dashboard/all-reports",
+    },
+     {
+      icon: TagDollar,
+      label: "Transactions",
+      href: "/dashboard/transactions",
     },
   ];
 
