@@ -115,29 +115,66 @@ const ProfilePage = async () => {
                   {user?.plan === "premium" ? "RecipeHub Premium" : "Free Plan"}
                 </h3>
 
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground">
+                <span
+                  className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                    user?.plan === "premium"
+                      ? "bg-accent text-accent-foreground"
+                      : "bg-surface text-surface-secondary-foreground"
+                  }`}
+                >
                   <Icon data={Star} size={16} />
                 </span>
               </div>
 
-              <ul className="mt-8 space-y-4 text-sm text-surface-secondary-foreground">
-                <li>⊙ Unlimited recipe submissions</li>
-                <li>⊙ Exclusive premium badge</li>
-                <li>⊙ Early access to masterclasses</li>
-                <li>⊙ Ad-free RecipeHub experience</li>
-              </ul>
+              {user?.plan === "premium" ? (
+                <>
+                  <div className="mt-4 inline-flex items-center rounded-full bg-success/10 px-3 py-1 text-xs font-semibold text-success">
+                    ✓ Premium Membership Active
+                  </div>
 
-              <Link
-                href="/dashboard/my-purchased"
-                className="mt-8 flex items-center justify-center gap-2 bg-accent px-6 py-4 text-xs font-bold uppercase text-accent-foreground hover:bg-accent-hover"
-              >
-                Upgrade to Premium
-                <Icon data={ArrowRight} size={14} />
-              </Link>
+                  <ul className="mt-8 space-y-4 text-sm text-surface-secondary-foreground">
+                    <li>⊙ Unlimited recipe submissions</li>
+                    <li>⊙ Premium chef profile badge</li>
+                    <li>⊙ Early access to masterclasses</li>
+                    <li>⊙ Ad-free RecipeHub experience</li>
+                    <li>⊙ Priority support access</li>
+                  </ul>
 
-              <p className="mt-4 text-center text-xs text-surface-secondary-foreground">
-                Billed annually after upgrade
-              </p>
+                  <Link
+                    href="/dashboard/subscription"
+                    className="mt-8 flex items-center justify-center gap-2 border border-accent px-6 py-4 text-xs font-bold uppercase text-accent hover:bg-accent hover:text-accent-foreground"
+                  >
+                    Manage Membership
+                    <Icon data={ArrowRight} size={14} />
+                  </Link>
+
+                  <p className="mt-4 text-center text-xs text-surface-secondary-foreground">
+                    Your premium membership is currently active.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <ul className="mt-8 space-y-4 text-sm text-surface-secondary-foreground">
+                    <li>⊙ Add up to 2 recipes</li>
+                    <li>⊙ Save up to 5 favorite recipes</li>
+                    <li>⊙ Access community features</li>
+                    <li>⊙ Upgrade anytime for premium benefits</li>
+                  </ul>
+
+                  <Link
+                    href="/pricing"
+                    className="mt-8 flex items-center justify-center gap-2 bg-accent px-6 py-4 text-xs font-bold uppercase text-accent-foreground hover:bg-accent-hover"
+                  >
+                    Upgrade to Premium
+                    <Icon data={ArrowRight} size={14} />
+                  </Link>
+
+                  <p className="mt-4 text-center text-xs text-surface-secondary-foreground">
+                    Unlock unlimited recipes, premium badge, and exclusive
+                    content.
+                  </p>
+                </>
+              )}
             </div>
 
             <div className="border border-border bg-surface-secondary p-8">

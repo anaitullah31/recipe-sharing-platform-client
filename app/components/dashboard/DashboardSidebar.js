@@ -25,7 +25,7 @@ export function DashboardSidebar() {
   const user = session?.user;
 
   const commonNavLinks = [
-    { icon: ChartColumn, label: "Overview", href: "/dashboard" },
+    { icon: ChartColumn, label: "Dashboard", href: "/dashboard" },
     { icon: Person, label: "Profile", href: "/dashboard/profile" },
     { icon: ShoppingCart, label: "Purchased", href: "/dashboard/my-purchased" },
     { icon: Bookmark, label: "Favorites", href: "/dashboard/favorites" },

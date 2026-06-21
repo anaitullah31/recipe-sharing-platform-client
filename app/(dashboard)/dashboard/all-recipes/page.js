@@ -18,7 +18,7 @@ import { requireRole } from "@/app/lib/core/session";
 const ManageRecipesPage = async () => {
   const data = await fetchData("/recipes");
   const recipes = data?.data || [];
-await requireRole("admin")
+  await requireRole("admin");
   const totalRecipes = recipes.length;
   const publishedRecipes = recipes.filter(
     (recipe) => recipe.status === "published",

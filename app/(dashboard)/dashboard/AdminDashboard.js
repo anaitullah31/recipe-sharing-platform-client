@@ -5,16 +5,27 @@ import HealthBar from "./HealthBar";
 import Link from "next/link";
 import StatCard from "./StatCard";
 import { fetchData } from "@/app/lib/core/server";
-import { ArrowDownToLine, Calendar, ChartColumn, CircleExclamation, Heart, Pencil, PersonPlus, Star } from "@gravity-ui/icons";
+import {
+  ArrowDownToLine,
+  Calendar,
+  ChartColumn,
+  CircleExclamation,
+  Heart,
+  Pencil,
+  PersonPlus,
+  Star,
+} from "@gravity-ui/icons";
 
 const AdminDashboard = async () => {
   const recipesData = await fetchData("/recipes");
   const usersData = await fetchData("/users");
   const reportsData = await fetchData("/reports");
+  const paymentsData = await fetchData("/payments");
 
   const recipes = recipesData?.data || [];
   const users = usersData?.data || [];
   const reports = reportsData?.data || [];
+  const payments = paymentsData?.data || [];
 
   const totalUsers = usersData?.stats?.totalUsers || users.length;
   const totalRecipes = recipes.length;
@@ -26,6 +37,69 @@ const AdminDashboard = async () => {
   const topRecipes = [...recipes]
     .sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0))
     .slice(0, 3);
+
+  const getTimeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+
+    if (seconds < 60) return "Just now";
+
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes} min ago`;
+
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hr ago`;
+
+    const days = Math.floor(hours / 24);
+    return `${days} days ago`;
+  };
+
+  const activities = [
+    ...recipes
+      .filter((recipe) => recipe.isFeatured)
+      .map((recipe) => ({
+        icon: Star,
+        title: `Recipe "${recipe.recipeName}" Featured`,
+        text: `By Chef ${recipe.authorName || "Unknown"} • ${getTimeAgo(
+          recipe.updatedAt || recipe.createdAt,
+        )}`,
+        date: recipe.updatedAt || recipe.createdAt,
+      })),
+
+    ...users
+      .filter((user) => user.plan === "premium")
+      .map((user) => ({
+        icon: PersonPlus,
+        title: "New Premium Member Joined",
+        text: `${user.name || user.email} upgraded membership • ${getTimeAgo(
+          user.updatedAt || user.createdAt,
+        )}`,
+        date: user.updatedAt || user.createdAt,
+      })),
+
+    ...reports.map((report) => ({
+      icon: CircleExclamation,
+      title: "New Report Filed",
+      text: `${report.reason} report for ${report.recipeName} • ${getTimeAgo(
+        report.createdAt,
+      )}`,
+      date: report.createdAt,
+    })),
+
+    ...payments.map((payment) => ({
+      icon: ChartColumn,
+      title:
+        payment.paymentType === "premium"
+          ? "Premium Payment Completed"
+          : "Recipe Purchase Completed",
+      text: `${payment.userEmail} paid $${payment.amount} • ${getTimeAgo(
+        payment.createdAt,
+      )}`,
+      date: payment.createdAt,
+    })),
+  ]
+    .filter((item) => item.date)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 5);
 
   return (
     <section className="min-h-screen bg-background px-6 py-10 text-foreground lg:px-16">
@@ -46,7 +120,7 @@ const AdminDashboard = async () => {
               Last 30 Days
             </button>
 
-            <button className="inline-flex items-center gap-2 bg-accent px-5 py-3 text-xs font-bold uppercase text-accent-foreground">
+            <button className="inline-flex cursor-pointer items-center gap-2 bg-accent px-5 py-3 text-xs font-bold uppercase text-accent-foreground">
               <Icon data={ArrowDownToLine} size={14} />
               Export Data
             </button>
@@ -159,26 +233,20 @@ const AdminDashboard = async () => {
             </div>
 
             <div className="divide-y divide-separator">
-              <ActivityItem
-                icon={Star}
-                title="Recipe Featured"
-                text="Automated promotion engine"
-              />
-              <ActivityItem
-                icon={PersonPlus}
-                title="New Premium Member Joined"
-                text="Membership upgrade completed"
-              />
-              <ActivityItem
-                icon={CircleExclamation}
-                title="New Report Filed"
-                text="Admin review required"
-              />
-              <ActivityItem
-                icon={Pencil}
-                title="Chef Profile Verified"
-                text="Creator profile updated"
-              />
+              {activities.map((activity, index) => (
+                <ActivityItem
+                  key={index}
+                  icon={activity.icon}
+                  title={activity.title}
+                  text={activity.text}
+                />
+              ))}
+
+              {activities.length === 0 && (
+                <div className="px-6 py-8 text-sm text-surface-secondary-foreground">
+                  No recent platform activity yet.
+                </div>
+              )}
             </div>
           </div>
 
