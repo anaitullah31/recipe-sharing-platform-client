@@ -6,6 +6,9 @@ import { Heart } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 
 const RecipeCard = ({ recipe }) => {
+  if(!recipe) {
+    return null
+  }
   const {
     _id,
     recipeName,

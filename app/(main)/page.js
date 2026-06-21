@@ -1,10 +1,11 @@
+import RecipeHero from "../components/RecipeHero";
 
 const HomePage = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+  return (
+    <div>
+      <RecipeHero />
+    </div>
+  );
 };
 
 export default HomePage;
