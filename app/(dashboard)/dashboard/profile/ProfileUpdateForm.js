@@ -164,7 +164,7 @@ const ProfileUpdateForm = ({ user }) => {
 
       <div className="border border-border bg-surface p-8">
         <h2 className="border-b border-separator pb-5 font-serif text-2xl">
-          Profile Image
+          Update Profile Image
         </h2>
 
         <label className="relative mt-8 flex min-h-56 cursor-pointer flex-col items-center justify-center overflow-hidden border border-dashed border-accent/40 bg-surface-secondary text-center">
