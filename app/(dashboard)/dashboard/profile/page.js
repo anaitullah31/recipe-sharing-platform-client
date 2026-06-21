@@ -4,6 +4,7 @@ import { Star, ArrowRight, FileArrowUp } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { getUserSession } from "@/app/lib/core/session";
 import { fetchData } from "@/app/lib/core/server";
+import ProfileUpdateForm from "./ProfileUpdateForm";
 
 const ProfilePage = async () => {
   const user = await getUserSession();
@@ -49,59 +50,7 @@ const ProfilePage = async () => {
 
         <div className="grid gap-8 lg:grid-cols-[1fr_420px]">
           <div className="space-y-8">
-            <div className="border border-border bg-surface p-8">
-              <h2 className="border-b border-separator pb-5 font-serif text-2xl">
-                Account Settings
-              </h2>
-
-              <form className="mt-8 space-y-6">
-                <div>
-                  <label className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
-                    Full Name
-                  </label>
-                  <input
-                    defaultValue={user?.name || ""}
-                    className="mt-2 w-full border-b border-border bg-transparent py-3 text-sm outline-none focus:border-accent"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
-                    Email Address
-                  </label>
-                  <input
-                    defaultValue={user?.email || ""}
-                    readOnly
-                    className="mt-2 w-full border-b border-border bg-transparent py-3 text-sm outline-none"
-                  />
-                </div>
-
-                <button
-                  type="button"
-                  className="mt-2 bg-accent px-8 py-3 text-xs font-bold uppercase text-accent-foreground hover:bg-accent-hover"
-                >
-                  Save Changes
-                </button>
-              </form>
-            </div>
-
-            <div className="border border-border bg-surface p-8">
-              <h2 className="border-b border-separator pb-5 font-serif text-2xl">
-                Profile Image
-              </h2>
-
-              <label className="mt-8 flex min-h-56 cursor-pointer flex-col items-center justify-center border border-dashed border-accent/40 bg-surface-secondary text-center">
-                <Icon data={FileArrowUp} size={28} className="text-accent" />
-                <p className="mt-4 text-sm text-surface-secondary-foreground">
-                  Drag and drop your profile photo here
-                </p>
-                <p className="mt-1 text-xs font-semibold text-foreground">
-                  Or click to browse
-                </p>
-
-                <input type="file" accept="image/*" className="hidden" />
-              </label>
-            </div>
+            <ProfileUpdateForm user={user} />
           </div>
 
           <aside className="space-y-8">
