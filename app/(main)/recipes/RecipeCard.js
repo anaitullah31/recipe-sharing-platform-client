@@ -6,8 +6,8 @@ import { Heart } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 
 const RecipeCard = ({ recipe }) => {
-  if(!recipe) {
-    return null
+  if (!recipe) {
+    return null;
   }
   const {
     _id,
@@ -33,9 +33,14 @@ const RecipeCard = ({ recipe }) => {
         </div>
 
         <div className="space-y-3 pt-4">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
-            {category}
-          </p>
+          <div className="flex justify-between">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+              {category}
+            </p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+              {cuisineType}
+            </p>
+          </div>
 
           <h3 className="font-serif text-2xl leading-tight text-foreground transition-colors group-hover:text-accent">
             {recipeName}

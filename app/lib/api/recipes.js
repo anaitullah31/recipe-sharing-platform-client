@@ -6,3 +6,7 @@ export const getRecipesByUserEmail = async (userEmail) => {
   const recipes = data?.data || data || [];
   return recipes;
 };
+
+export const getRecipesByFeatured = async () => {
+  const data = await fetchData("/recipe?featured=true");
+};
