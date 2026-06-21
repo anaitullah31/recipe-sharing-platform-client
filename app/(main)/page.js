@@ -1,3 +1,4 @@
+import ChefStorySection from "../components/ChefStorySection";
 import FeaturedSection from "../components/FeaturedSection";
 import PopularRecipesSection from "../components/PopularRecipesSection";
 import RecipeHero from "../components/RecipeHero";
@@ -10,6 +11,7 @@ const HomePage = () => {
       <FeaturedSection />
       <PopularRecipesSection />
       <TechniqueSection />
+      <ChefStorySection />
     </div>
   );
 };
