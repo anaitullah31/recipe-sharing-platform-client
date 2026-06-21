@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { Icon } from "@gravity-ui/uikit";
 import { ArrowDownToLine, Funnel, Magnifier } from "@gravity-ui/icons";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchData, fetchSecureData } from "@/app/lib/core/server";
 import BlockButton from "./BlockButton";
 import { getUserSession, requireRole } from "@/app/lib/core/session";
 
 const ManageUsersPage = async () => {
-  const usersData = await fetchData("/users");
+  const usersData = await fetchSecureData("/users");
   const currentUser = await getUserSession();
   await requireRole("admin");
   const users = usersData?.data || [];

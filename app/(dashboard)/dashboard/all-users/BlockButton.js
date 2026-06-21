@@ -1,6 +1,6 @@
 "use client";
 
-import { serverMutation } from "@/app/lib/core/server";
+import { clientMutation } from "@/app/lib/core/client";
 import { useRouter } from "next/navigation";
 
 const BlockButton = ({ user, currentUser }) => {
@@ -8,7 +8,7 @@ const BlockButton = ({ user, currentUser }) => {
 
   const handleStatus = async () => {
     try {
-      const data = await serverMutation(
+      const data = await clientMutation(
         `/users/${user._id}`,
         {
           currentUserEmail: currentUser?.email,

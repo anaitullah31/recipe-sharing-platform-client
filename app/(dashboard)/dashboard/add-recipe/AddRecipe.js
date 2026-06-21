@@ -1,6 +1,6 @@
 "use client";
 
-import { serverMutation } from "@/app/lib/core/server";
+import { clientMutation } from "@/app/lib/core/client";
 import { Camera, Plus, Sparkles, TrashBin } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import Image from "next/image";
@@ -126,7 +126,7 @@ const AddRecipe = ({ user }) => {
     try {
       setLoading(true);
 
-      const data = await serverMutation("/recipes", recipeData, "POST");
+      const data = await clientMutation("/recipes", recipeData, "POST");
 
       if (data.success) {
         router.push("/dashboard/my-recipes");

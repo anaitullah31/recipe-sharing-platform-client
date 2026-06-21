@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { auth } from "../auth";
 import { redirect } from "next/navigation";
+import { authClient } from "../auth-client";
 
 export const getUserSession = async () => {
   const session = await auth.api.getSession({

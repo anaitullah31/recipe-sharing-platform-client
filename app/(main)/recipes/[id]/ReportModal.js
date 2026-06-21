@@ -1,6 +1,6 @@
 "use client";
 
-import { serverMutation } from "@/app/lib/core/server";
+import { clientMutation } from "@/app/lib/core/client";
 import { Flag, Xmark } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import {
@@ -39,7 +39,7 @@ const ReportButton = ({ recipe, user }) => {
     try {
       setLoading(true);
 
-      const data = await serverMutation("/reports", reportData, "POST");
+      const data = await clientMutation("/reports", reportData, "POST");
 
       if (data.success) {
         await Swal.fire({

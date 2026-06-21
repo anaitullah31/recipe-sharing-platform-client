@@ -3,7 +3,7 @@ import Link from "next/link";
 import { TrashBin, ArrowRight } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { getUserSession } from "@/app/lib/core/session";
-import { fetchData, serverMutation } from "@/app/lib/core/server";
+import { fetchData } from "@/app/lib/core/server";
 import DeleteFavoriteButton from "./DeleteFavoriteButton";
 
 const FavoritesPage = async () => {

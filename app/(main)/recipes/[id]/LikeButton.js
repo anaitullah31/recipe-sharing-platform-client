@@ -1,6 +1,6 @@
 "use client";
 
-import { serverMutation } from "@/app/lib/core/server";
+import { clientMutation } from "@/app/lib/core/client";
 import { Heart } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { useState } from "react";
@@ -25,7 +25,7 @@ const LikeButton = ({ recipe, userEmail }) => {
     setLikesCount(liked ? likesCount - 1 : likesCount + 1);
 
     try {
-      const data = await serverMutation(
+      const data = await clientMutation(
         `/recipes/${recipe._id}`,
         {
           action: "like",

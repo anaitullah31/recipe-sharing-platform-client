@@ -1,6 +1,6 @@
 "use client";
 
-import { serverMutation } from "@/app/lib/core/server";
+import { clientMutation } from "@/app/lib/core/client";
 import { TrashBin } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,7 @@ const DeleteRecipe = ({ recipeId }) => {
     try {
       setLoading(true);
 
-      const data = await serverMutation(`/recipes/${recipeId}`, {}, "DELETE");
+      const data = await clientMutation(`/recipes/${recipeId}`, {}, "DELETE");
 
       if (data.success) {
         await Swal.fire({

@@ -1,8 +1,8 @@
 "use client";
 
 import Swal from "sweetalert2";
-import { serverMutation } from "@/app/lib/core/server";
 import { useRouter } from "next/navigation";
+import { clientMutation } from "@/app/lib/core/client";
 
 const DismissReport = ({ reportId, status }) => {
   const router = useRouter();
@@ -22,7 +22,7 @@ const DismissReport = ({ reportId, status }) => {
     if (!result.isConfirmed) return;
 
     try {
-      const data = await serverMutation(`/reports/${reportId}`, {}, "PATCH");
+      const data = await clientMutation(`/reports/${reportId}`, {}, "PATCH");
 
       if (data.success) {
         await Swal.fire({

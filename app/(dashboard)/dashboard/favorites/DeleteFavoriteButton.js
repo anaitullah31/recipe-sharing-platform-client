@@ -1,6 +1,6 @@
 "use client";
 
-import { serverMutation } from "@/app/lib/core/server";
+import { clientMutation } from "@/app/lib/core/client";
 import { TrashBin } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { useRouter } from "next/navigation";
@@ -28,7 +28,7 @@ const DeleteFavoriteButton = ({ favoriteId }) => {
     try {
       setLoading(true);
 
-      const data = await serverMutation(
+      const data = await clientMutation(
         `/favorites/${favoriteId}`,
         {},
         "DELETE",

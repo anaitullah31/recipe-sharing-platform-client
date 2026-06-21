@@ -1,6 +1,6 @@
 "use client";
 
-import { serverMutation } from "@/app/lib/core/server";
+import { clientMutation } from "@/app/lib/core/client";
 import { Bookmark } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { useState } from "react";
@@ -30,7 +30,7 @@ const FavoriteButton = ({
       setLoading(true);
 
       if (isFavorite) {
-        const data = await serverMutation(
+        const data = await clientMutation(
           `/favorites/${currentFavoriteId}`,
           {},
           "DELETE",
@@ -54,7 +54,7 @@ const FavoriteButton = ({
         recipeImage: recipe.recipeImage,
       };
 
-      const data = await serverMutation("/favorites", favoriteData, "POST");
+      const data = await clientMutation("/favorites", favoriteData, "POST");
 
       if (data.success) {
         setIsFavorite(true);

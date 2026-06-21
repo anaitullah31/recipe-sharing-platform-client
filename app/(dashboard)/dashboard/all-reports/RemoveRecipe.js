@@ -1,8 +1,8 @@
 "use client";
 
 import Swal from "sweetalert2";
-import { serverMutation } from "@/app/lib/core/server";
 import { useRouter } from "next/navigation";
+import { clientMutation } from "@/app/lib/core/client";
 
 const RemoveRecipe = ({ reportId, status }) => {
   const router = useRouter();
@@ -22,7 +22,7 @@ const RemoveRecipe = ({ reportId, status }) => {
     if (!result.isConfirmed) return;
 
     try {
-      const data = await serverMutation(`/recipes/${reportId}`, {}, "DELETE");
+      const data = await clientMutation(`/recipes/${reportId}`, {}, "DELETE");
 
       if (data.success) {
         await Swal.fire({
