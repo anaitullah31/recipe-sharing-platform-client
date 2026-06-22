@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icon } from "@gravity-ui/uikit";
 import { ChevronLeft, ChevronRight } from "@gravity-ui/icons";
 
-const Pagination = ({
+const PaginationContent = ({
   pagination,
   itemName = "items",
   limitOptions = [6, 8, 10, 12, 20],
@@ -55,7 +56,11 @@ const Pagination = ({
             className="h-9 border border-border bg-surface px-3 text-xs outline-none"
           >
             {limitOptions.map((option) => (
-              <option key={option} value={option}>
+              <option
+                key={option}
+                value={option}
+                className="bg-background text-foreground"
+              >
                 {option}
               </option>
             ))}
@@ -115,6 +120,14 @@ const Pagination = ({
         </div>
       </div>
     </div>
+  );
+};
+
+const Pagination = (props) => {
+  return (
+    <Suspense fallback={null}>
+      <PaginationContent {...props} />
+    </Suspense>
   );
 };
 

@@ -3,6 +3,7 @@ import { Funnel } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import Pagination from "@/app/components/shared/Pagination";
 import { getUserSession } from "@/app/lib/core/session";
+import SummaryCard from "./SummaryCard";
 
 const PaymentHistoryPage = async ({ searchParams }) => {
   const params = await searchParams;
@@ -44,21 +45,23 @@ const PaymentHistoryPage = async ({ searchParams }) => {
               transactions.
             </p>
           </div>
-          <SummaryCard
-            title="Total Spent"
-            value={`$${Number(stats.totalSpent || 0).toFixed(2)}`}
-            note="Your total payments"
-          />
-          <SummaryCard
-            title="Premium Payments"
-            value={stats.premiumPayments || 0}
-            note="Membership transactions"
-          />
-          <SummaryCard
-            title="Recipe Purchases"
-            value={stats.recipePurchases || 0}
-            note="Purchased recipes"
-          />
+          <div className="flex gap-4">
+            <SummaryCard
+              title="Total Spent"
+              value={`$${Number(stats.totalSpent || 0).toFixed(2)}`}
+              note="Your total payments"
+            />
+            <SummaryCard
+              title="Premium Payments"
+              value={stats.premiumPayments || 0}
+              note="Membership transactions"
+            />
+            <SummaryCard
+              title="Recipe Purchases"
+              value={stats.recipePurchases || 0}
+              note="Purchased recipes"
+            />
+          </div>
         </div>
 
         <div className="mb-8 flex flex-col gap-4 border border-border bg-surface-secondary p-5 lg:flex-row lg:items-end lg:justify-between">
@@ -192,20 +195,6 @@ const PaymentHistoryPage = async ({ searchParams }) => {
         </div>
       </div>
     </section>
-  );
-};
-
-const SummaryCard = ({ title, value, note, danger }) => {
-  return (
-    <div className="border border-border bg-surface-secondary p-6">
-      <p className="text-[10px] font-bold uppercase tracking-widest text-surface-secondary-foreground">
-        {title}
-      </p>
-      <h3 className={`mt-3 font-serif text-3xl ${danger ? "text-danger" : ""}`}>
-        {value}
-      </h3>
-      <p className="mt-3 text-xs text-surface-secondary-foreground">{note}</p>
-    </div>
   );
 };
 

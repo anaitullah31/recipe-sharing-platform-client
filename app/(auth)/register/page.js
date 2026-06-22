@@ -39,7 +39,7 @@ export default function RegisterPage() {
 
   return (
     <section className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground">
-      <div className="mx-auto grid w-full max-w-6xl overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-lg md:min-h-175 md:grid-cols-2 md:p-8">
+      <div className="mx-auto grid w-full max-w-7xl overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-lg md:min-h-175 md:grid-cols-2 md:p-8">
         {/* Left Side */}
         <div
           className="relative hidden overflow-hidden rounded-xl bg-cover bg-center md:block"
