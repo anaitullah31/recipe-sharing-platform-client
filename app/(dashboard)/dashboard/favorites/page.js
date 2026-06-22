@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { getUserSession } from "@/app/lib/core/session";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import DeleteFavoriteButton from "./DeleteFavoriteButton";
 import Pagination from "@/app/components/shared/Pagination";
 
@@ -15,7 +15,7 @@ const FavoritesPage = async ({ searchParams }) => {
   const currentPage = Number(params?.page) || 1;
   const limit = Number(params?.limit) || 8;
 
-  const data = await fetchData(
+  const data = await fetchSecureData(
     `/favorites?userEmail=${user?.email}&page=${currentPage}&limit=${limit}`,
   );
 

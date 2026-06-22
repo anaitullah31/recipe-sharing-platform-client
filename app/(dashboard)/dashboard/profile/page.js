@@ -3,16 +3,16 @@ import Link from "next/link";
 import { Star, ArrowRight, FileArrowUp } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import { getUserSession } from "@/app/lib/core/session";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import ProfileUpdateForm from "./ProfileUpdateForm";
 
 const ProfilePage = async () => {
   const user = await getUserSession();
 
-  const recipesData = await fetchData(`/recipes?authorEmail=${user?.email}`);
+  const recipesData = await fetchSecureData(`/recipes?authorEmail=${user?.email}`);
   const recipes = recipesData?.data || [];
 
-  const favoritesData = await fetchData(`/favorites?userEmail=${user?.email}`);
+  const favoritesData = await fetchSecureData(`/favorites?userEmail=${user?.email}`);
   const favorites = favoritesData?.data || [];
 
   return (

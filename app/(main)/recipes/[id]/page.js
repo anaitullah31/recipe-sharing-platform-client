@@ -9,7 +9,7 @@ import {
   Flag,
 } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import LikeButton from "./LikeButton";
 import { getUserSession } from "@/app/lib/core/session";
 import FavoriteButton from "./FavoriteButton";
@@ -20,9 +20,9 @@ const RecipeDetails = async ({ params }) => {
   const user = await getUserSession();
 
   const { id } = await params;
-  const data = await fetchData(`/recipes/${id}`);
+  const data = await fetchSecureData(`/recipes/${id}`);
   const recipe = data?.data;
-  const favorites = await fetchData(`/favorites?userEmail=${user.email}`);
+  const favorites = await fetchSecureData(`/favorites?userEmail=${user.email}`);
   const favoriteInfo = favorites?.data?.find(
     (favorite) => favorite.recipeId === recipe._id,
   );

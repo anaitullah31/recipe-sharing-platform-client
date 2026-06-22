@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import RemoveRecipe from "./RemoveRecipe";
 import DismissReport from "./DismissReport";
 import { requireRole } from "@/app/lib/core/session";
@@ -13,7 +13,7 @@ const ManageReportsPage = async ({ searchParams }) => {
   const currentPage = Number(params?.page) || 1;
   const limit = Number(params?.limit) || 8;
 
-  const data = await fetchData(`/reports?page=${currentPage}&limit=${limit}`);
+  const data = await fetchSecureData(`/reports?page=${currentPage}&limit=${limit}`);
   const reports = data?.data || [];
   const pagination = data?.pagination || {};
 

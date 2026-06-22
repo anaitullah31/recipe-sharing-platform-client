@@ -4,7 +4,7 @@ import ActivityItem from "./ActivityItem";
 import HealthBar from "./HealthBar";
 import Link from "next/link";
 import StatCard from "./StatCard";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import {
   ArrowDownToLine,
   Calendar,
@@ -17,10 +17,10 @@ import {
 } from "@gravity-ui/icons";
 
 const AdminDashboard = async () => {
-  const recipesData = await fetchData("/recipes");
-  const usersData = await fetchData("/users");
-  const reportsData = await fetchData("/reports");
-  const paymentsData = await fetchData("/payments");
+  const recipesData = await fetchSecureData("/recipes");
+  const usersData = await fetchSecureData("/users");
+  const reportsData = await fetchSecureData("/reports");
+  const paymentsData = await fetchSecureData("/payments");
 
   const recipes = recipesData?.data || [];
   const users = usersData?.data || [];

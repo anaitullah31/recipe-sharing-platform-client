@@ -1,5 +1,5 @@
-import { fetchData } from "@/app/lib/core/server";
-import { ArrowDown, Funnel } from "@gravity-ui/icons";
+import { fetchSecureData } from "@/app/lib/core/server";
+import { Funnel } from "@gravity-ui/icons";
 import { Icon } from "@gravity-ui/uikit";
 import Pagination from "@/app/components/shared/Pagination";
 import { getUserSession } from "@/app/lib/core/session";
@@ -11,14 +11,28 @@ const PaymentHistoryPage = async ({ searchParams }) => {
   const currentPage = Number(params?.page) || 1;
   const limit = Number(params?.limit) || 8;
 
-  const data = await fetchData(
+  const data = await fetchSecureData(
     `/payments?userEmail=${user?.email}&page=${currentPage}&limit=${limit}`,
   );
 
   const payments = data?.data || [];
-  const pagination = data?.pagination || {};
-  const stats = data?.stats || {};
 
+  const pagination = data?.pagination || {};
+
+  const stats = {
+    totalSpent: payments.reduce(
+      (total, payment) => total + (payment.amount || 0),
+      0,
+    ),
+
+    premiumPayments: payments.filter(
+      (payment) => payment.paymentType === "premium",
+    ).length,
+
+    recipePurchases: payments.filter(
+      (payment) => payment.paymentType === "recipe",
+    ).length,
+  };
   return (
     <section className="min-h-screen bg-background px-6 py-12 text-foreground lg:px-16">
       <div className="mx-auto max-w-7xl">

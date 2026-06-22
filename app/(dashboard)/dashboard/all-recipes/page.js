@@ -8,7 +8,7 @@ import {
   SquareChartColumn,
   Star,
 } from "@gravity-ui/icons";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import DeleteRecipe from "./DeleteRecipe";
 import FeaturedButton from "./FeaturedButton";
 import { requireRole } from "@/app/lib/core/session";
@@ -22,7 +22,7 @@ const ManageRecipesPage = async ({ searchParams }) => {
   const currentPage = Number(params?.page) || 1;
   const limit = Number(params?.limit) || 8;
 
-  const data = await fetchData(`/recipes?page=${currentPage}&limit=${limit}`);
+  const data = await fetchSecureData(`/recipes?page=${currentPage}&limit=${limit}`);
 
   const recipes = data?.data || [];
   const pagination = data?.pagination || {};

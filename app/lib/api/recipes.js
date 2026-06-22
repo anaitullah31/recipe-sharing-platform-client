@@ -1,4 +1,4 @@
-import { fetchData } from "../core/server";
+import { fetchData, fetchSecureData } from "../core/server";
 
 export const getRecipesByUserEmail = async (userEmail) => {
   const data = await fetchData(`/recipes?authorEmail=${userEmail}`);

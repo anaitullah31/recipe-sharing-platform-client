@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@gravity-ui/uikit";
-import { fetchData } from "@/app/lib/core/server";
 import { getUserSession } from "@/app/lib/core/session";
 import AdminDashboard from "./AdminDashboard";
 import UserDashboard from "./UserDashboard";

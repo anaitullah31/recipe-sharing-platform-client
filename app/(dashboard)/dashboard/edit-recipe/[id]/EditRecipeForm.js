@@ -198,32 +198,116 @@ const EditRecipeForm = ({ recipe }) => {
                   defaultValue={recipe.category}
                   className="border-b border-border bg-transparent py-3 text-sm outline-none focus:border-accent"
                 >
-                  <option value="">Select Category</option>
-                  <option value="Breakfast">Breakfast</option>
-                  <option value="Lunch">Lunch</option>
-                  <option value="Dinner">Dinner</option>
-                  <option value="Dessert">Dessert</option>
-                  <option value="Snack">Snack</option>
-                  <option value="Beverage">Beverage</option>
+                  <option className="bg-background text-foreground" value="">
+                    Select Category
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Breakfast"
+                  >
+                    Breakfast
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Lunch"
+                  >
+                    Lunch
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Dinner"
+                  >
+                    Dinner
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Dessert"
+                  >
+                    Dessert
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Snack"
+                  >
+                    Snack
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Beverage"
+                  >
+                    Beverage
+                  </option>
                 </select>
 
                 <select
                   name="cuisineType"
                   required
                   defaultValue={recipe.cuisineType}
-                  className="border-b border-border bg-transparent py-3 text-sm outline-none focus:border-accent"
+                  className="border-b border-border bg-surface py-3 text-sm text-foreground outline-none focus:border-accent"
                 >
-                  <option value="">Select Cuisine Type</option>
-                  <option value="Bangladeshi">Bangladeshi</option>
-                  <option value="Indian">Indian</option>
-                  <option value="Chinese">Chinese</option>
-                  <option value="Thai">Thai</option>
-                  <option value="Italian">Italian</option>
-                  <option value="Mexican">Mexican</option>
-                  <option value="Japanese">Japanese</option>
-                  <option value="French">French</option>
-                  <option value="American">American</option>
-                  <option value="Mediterranean">Mediterranean</option>
+                  <option className="bg-background text-foreground" value="">
+                    Select Cuisine Type
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Bangladeshi"
+                  >
+                    Bangladeshi
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Indian"
+                  >
+                    Indian
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Chinese"
+                  >
+                    Chinese
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Thai"
+                  >
+                    Thai
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Italian"
+                  >
+                    Italian
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Mexican"
+                  >
+                    Mexican
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Japanese"
+                  >
+                    Japanese
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="French"
+                  >
+                    French
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="American"
+                  >
+                    American
+                  </option>
+                  <option
+                    className="bg-background text-foreground"
+                    value="Mediterranean"
+                  >
+                    Mediterranean
+                  </option>
                 </select>
               </div>
             </div>

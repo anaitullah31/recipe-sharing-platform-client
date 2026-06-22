@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import QuickAction from "./QuickAction";
 import UserStatCard from "./UserStatCard";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import { BookOpen, Box, Heart, Plus, ThumbsUp } from "@gravity-ui/icons";
 
 const UserDashboard = async ({ user }) => {
-  const recipesData = await fetchData(`/recipes?authorEmail=${user?.email}`);
-  const favoritesData = await fetchData(`/favorites?userEmail=${user?.email}`);
+  const recipesData = await fetchSecureData(`/recipes?authorEmail=${user?.email}`);
+  const favoritesData = await fetchSecureData(`/favorites?userEmail=${user?.email}`);
 
   const myRecipes = recipesData?.data || [];
   const favorites = favoritesData?.data || [];

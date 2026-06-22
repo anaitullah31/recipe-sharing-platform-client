@@ -1,4 +1,4 @@
-import { fetchData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import RecipeCard from "./RecipeCard";
 import { Magnifier } from "@gravity-ui/icons";
 import Pagination from "@/app/components/shared/Pagination";
@@ -9,7 +9,7 @@ const RecipePage = async ({ searchParams }) => {
   const currentPage = Number(params?.page) || 1;
   const limit = Number(params?.limit) || 8;
 
-  const recipesData = await fetchData(
+  const recipesData = await fetchSecureData(
     `/recipes?page=${currentPage}&limit=${limit}`
   );
 

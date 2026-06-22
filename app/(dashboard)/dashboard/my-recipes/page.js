@@ -11,7 +11,7 @@ import {
 } from "@gravity-ui/icons";
 import { getUserSession } from "@/app/lib/core/session";
 import DeleteRecipe from "../all-recipes/DeleteRecipe";
-import { fetchData } from "@/app/lib/core/server";
+import { fetchSecureData } from "@/app/lib/core/server";
 import Pagination from "@/app/components/shared/Pagination";
 
 const MyRecipes = async ({ searchParams }) => {
@@ -26,7 +26,7 @@ const MyRecipes = async ({ searchParams }) => {
   const currentPage = Number(params?.page) || 1;
   const limit = Number(params?.limit) || 8;
 
-  const data = await fetchData(
+  const data = await fetchSecureData(
     `/recipes?authorEmail=${user.email}&page=${currentPage}&limit=${limit}`,
   );
 
