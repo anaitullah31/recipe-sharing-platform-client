@@ -143,25 +143,26 @@ const AddRecipe = ({ user }) => {
   };
 
   return (
-    <section className="min-h-screen bg-background px-6 py-12 text-foreground lg:px-16">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-8">
+    <section className="min-h-screen bg-background px-4 pt-14 pb-8 text-foreground sm:px-6 sm:pt-16 sm:pb-10 lg:px-10 lg:pt-10 xl:px-16">
+      <div className="mx-auto w-full max-w-7xl overflow-hidden">
+        <div className="mb-8 sm:mb-10">
           <p className="text-xs text-surface-secondary-foreground">
             Recipes <span className="mx-2">›</span>{" "}
             <span className="text-accent">New Recipe</span>
           </p>
 
-          <h1 className="mt-2 font-serif text-4xl md:text-5xl">
+          <h1 className="mt-2 font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl">
             Create New Recipe
           </h1>
         </div>
+
         <form
           onSubmit={(e) => handleSubmit(e, "published")}
-          className="grid gap-8 lg:grid-cols-[1fr_360px]"
+          className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px] xl:gap-8"
         >
-          <div className="space-y-8">
-            <div className="border border-border bg-surface p-8">
-              <p className="mb-8 text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
+          <div className="space-y-6 lg:space-y-8">
+            <div className="rounded-xl border border-border bg-surface p-5 sm:p-6 lg:p-8">
+              <p className="mb-6 text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground lg:mb-8">
                 Recipe Identity
               </p>
 
@@ -169,14 +170,14 @@ const AddRecipe = ({ user }) => {
                 name="recipeName"
                 required
                 placeholder="Recipe Title"
-                className="w-full border-b border-border bg-transparent pb-4 font-serif text-2xl outline-none placeholder:text-surface-tertiary-foreground focus:border-accent"
+                className="w-full border-b border-border bg-transparent pb-4 font-serif text-2xl outline-none placeholder:text-surface-tertiary-foreground focus:border-accent sm:text-3xl"
               />
 
-              <div className="mt-8 grid gap-6 md:grid-cols-2">
+              <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:mt-8 lg:gap-6">
                 <select
                   name="category"
                   required
-                  className="border-b border-border bg-transparent py-3 text-sm outline-none focus:border-accent"
+                  className="w-full border-b border-border bg-transparent py-3 text-sm outline-none focus:border-accent"
                 >
                   <option value="">Select Category</option>
                   <option value="Breakfast">Breakfast</option>
@@ -190,7 +191,7 @@ const AddRecipe = ({ user }) => {
                 <select
                   name="cuisineType"
                   required
-                  className="border-b border-border bg-transparent py-3 text-sm outline-none focus:border-accent"
+                  className="w-full border-b border-border bg-transparent py-3 text-sm outline-none focus:border-accent"
                 >
                   <option value="">Select Cuisine Type</option>
                   <option value="Bangladeshi">Bangladeshi</option>
@@ -207,8 +208,8 @@ const AddRecipe = ({ user }) => {
               </div>
             </div>
 
-            <div className="border border-border bg-surface p-8">
-              <div className="mb-6 flex items-center justify-between">
+            <div className="rounded-xl border border-border bg-surface p-5 sm:p-6 lg:p-8">
+              <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
                   Ingredients
                 </p>
@@ -216,7 +217,7 @@ const AddRecipe = ({ user }) => {
                 <button
                   type="button"
                   onClick={addIngredient}
-                  className="flex cursor-pointer items-center gap-2 text-xs font-semibold text-accent"
+                  className="inline-flex cursor-pointer items-center gap-2 text-xs font-semibold text-accent"
                 >
                   <Icon data={Plus} size={14} />
                   Add Ingredient
@@ -227,7 +228,7 @@ const AddRecipe = ({ user }) => {
                 {ingredients.map((item, index) => (
                   <div
                     key={index}
-                    className="grid grid-cols-[1fr_120px_24px] gap-5"
+                    className="grid grid-cols-[minmax(0,1fr)_42px] gap-4 sm:grid-cols-[minmax(0,1fr)_140px_32px] sm:gap-5"
                   >
                     <input
                       value={item.name}
@@ -243,14 +244,14 @@ const AddRecipe = ({ user }) => {
                       onChange={(e) =>
                         updateIngredient(index, "quantity", e.target.value)
                       }
-                      placeholder="Quantity"
+                      placeholder="Qty"
                       className="border-b border-border bg-transparent py-3 text-sm outline-none focus:border-accent"
                     />
 
                     <button
                       type="button"
                       onClick={() => removeIngredient(index)}
-                      className="cursor-pointer text-danger"
+                      className="col-start-2 row-start-1 flex h-11 cursor-pointer items-center justify-center text-danger sm:col-start-auto sm:row-start-auto"
                     >
                       <Icon data={TrashBin} size={16} />
                     </button>
@@ -259,15 +260,15 @@ const AddRecipe = ({ user }) => {
               </div>
             </div>
 
-            <div className="border border-border bg-surface p-8">
-              <p className="mb-8 text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
+            <div className="rounded-xl border border-border bg-surface p-5 sm:p-6 lg:p-8">
+              <p className="mb-6 text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground lg:mb-8">
                 Preparation Steps
               </p>
 
               <div className="space-y-6">
                 {steps.map((step, index) => (
-                  <div key={index} className="flex gap-5">
-                    <span className="font-serif text-3xl text-accent/40">
+                  <div key={index} className="flex gap-4 sm:gap-5">
+                    <span className="shrink-0 font-serif text-2xl text-accent/40 sm:text-3xl">
                       {index + 1}
                     </span>
 
@@ -284,26 +285,27 @@ const AddRecipe = ({ user }) => {
               <button
                 type="button"
                 onClick={addStep}
-                className="mt-6 w-full cursor-pointer border border-dashed border-border py-4 text-sm hover:bg-surface-hover"
+                className="mt-6 w-full cursor-pointer rounded-lg border border-dashed border-border py-4 text-sm transition hover:bg-surface-hover"
               >
                 + Add Step
               </button>
             </div>
           </div>
 
-          <aside className="space-y-8">
-            <div className="border border-border bg-surface p-8">
+          <aside className="space-y-6 xl:space-y-8">
+            <div className="rounded-xl border border-border bg-surface p-5 sm:p-6 lg:p-8">
               <p className="mb-6 text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
                 Recipe Photography
               </p>
 
-              <label className="relative flex min-h-52 cursor-pointer flex-col items-center justify-center overflow-hidden border border-dashed border-accent/50 bg-surface-secondary text-center">
+              <label className="relative flex min-h-56 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-accent/50 bg-surface-secondary text-center sm:min-h-64 xl:min-h-52">
                 {preview ? (
                   <>
                     <Image
                       src={preview}
                       alt="Recipe Preview"
                       fill
+                      sizes="(max-width: 1280px) 100vw, 360px"
                       unoptimized
                       className="object-cover"
                     />
@@ -317,7 +319,7 @@ const AddRecipe = ({ user }) => {
                 ) : (
                   <>
                     <Icon data={Camera} size={42} className="text-accent" />
-                    <p className="mt-4 text-sm text-surface-secondary-foreground">
+                    <p className="mt-4 max-w-48 text-sm leading-6 text-surface-secondary-foreground">
                       Upload your recipe image here
                     </p>
                   </>
@@ -330,11 +332,11 @@ const AddRecipe = ({ user }) => {
                 accept="image/*"
                 required
                 onChange={handleImageUpload}
-                className="mt-5 w-full border-b border-border bg-transparent py-3 text-sm outline-none file:mr-4 file:cursor-pointer file:border-0 file:bg-accent file:px-4 file:py-2 file:text-xs file:font-semibold file:text-accent-foreground hover:file:bg-accent-hover"
+                className="mt-5 w-full border-b border-border bg-transparent py-3 text-sm outline-none file:mr-4 file:cursor-pointer file:rounded file:border-0 file:bg-accent file:px-4 file:py-2 file:text-xs file:font-semibold file:text-accent-foreground hover:file:bg-accent-hover"
               />
             </div>
 
-            <div className="border border-border bg-surface p-8">
+            <div className="rounded-xl border border-border bg-surface p-5 sm:p-6 lg:p-8">
               <p className="mb-6 text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
                 Kitchen Metrics
               </p>
@@ -343,14 +345,14 @@ const AddRecipe = ({ user }) => {
 
               <select
                 name="difficultyLevel"
-                className="mt-3 w-full border border-border bg-surface-secondary px-4 py-3 text-sm outline-none focus:border-accent"
+                className="mt-3 w-full rounded border border-border bg-surface-secondary px-4 py-3 text-sm outline-none focus:border-accent"
               >
                 <option>Easy</option>
                 <option>Medium</option>
                 <option>Hard</option>
               </select>
 
-              <div className="mt-6 grid gap-5 md:grid-cols-2">
+              <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-2">
                 <div>
                   <label className="text-xs font-semibold">Prep Time</label>
                   <input
@@ -374,25 +376,27 @@ const AddRecipe = ({ user }) => {
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading || uploadingImage}
-              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded bg-accent px-6 py-5 text-xs font-bold uppercase text-accent-foreground shadow-lg hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <Icon data={Sparkles} size={16} />
-              {uploadingImage
-                ? "Uploading Image..."
-                : loading
-                  ? "Publishing..."
-                  : "Publish to RecipeHub"}
-            </button>
+            <div className="sticky bottom-0 z-10 -mx-4 border-t border-border bg-background/95 px-4 py-4 backdrop-blur sm:-mx-6 sm:px-6 xl:static xl:mx-0 xl:border-0 xl:bg-transparent xl:p-0 xl:backdrop-blur-none">
+              <button
+                type="submit"
+                disabled={loading || uploadingImage}
+                className="flex w-full cursor-pointer items-center justify-center gap-2 rounded bg-accent px-6 py-4 text-xs font-bold uppercase text-accent-foreground shadow-lg transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60 sm:py-5"
+              >
+                <Icon data={Sparkles} size={16} />
+                {uploadingImage
+                  ? "Uploading Image..."
+                  : loading
+                    ? "Publishing..."
+                    : "Publish to RecipeHub"}
+              </button>
 
-            <Link
-              href="/dashboard/my-recipes"
-              className="flex items-center justify-center py-3 text-xs font-bold uppercase text-surface-secondary-foreground"
-            >
-              Cancel
-            </Link>
+              <Link
+                href="/dashboard/my-recipes"
+                className="mt-3 flex items-center justify-center py-3 text-xs font-bold uppercase text-surface-secondary-foreground"
+              >
+                Cancel
+              </Link>
+            </div>
           </aside>
         </form>
       </div>

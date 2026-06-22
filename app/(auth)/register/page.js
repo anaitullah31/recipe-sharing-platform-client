@@ -13,6 +13,7 @@ import {
 } from "@gravity-ui/icons";
 import { authClient } from "@/app/lib/auth-client";
 import { redirect } from "next/navigation";
+import GoogleSignInButton from "@/app/components/GoogleSignInButton";
 
 export default function RegisterPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -39,7 +40,7 @@ export default function RegisterPage() {
 
   return (
     <section className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground">
-      <div className="mx-auto grid w-full max-w-7xl overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-lg md:min-h-175 md:grid-cols-2 md:p-8">
+      <div className="mx-auto grid w-full max-w-6xl overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-lg md:min-h-175 md:grid-cols-2 md:p-8">
         {/* Left Side */}
         <div
           className="relative hidden overflow-hidden rounded-xl bg-cover bg-center md:block"
@@ -180,14 +181,7 @@ export default function RegisterPage() {
               </div>
 
               {/* Google Button */}
-              <Button
-                type="button"
-                variant="bordered"
-                radius="md"
-                className="h-12 w-full border bg-surface font-medium rounded-md"
-              >
-                Sign Up with Google
-              </Button>
+              <GoogleSignInButton />
 
               {/* Login Link */}
               <p className="pt-2 text-center text-sm text-muted">

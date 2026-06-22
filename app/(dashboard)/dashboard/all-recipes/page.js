@@ -36,8 +36,8 @@ const ManageRecipesPage = async ({ searchParams }) => {
   const featuredRecipes = recipes.filter((recipe) => recipe.isFeatured).length;
 
   return (
-    <section className="min-h-screen bg-background px-6 py-10 text-foreground lg:px-16">
-      <div className="mx-auto max-w-7xl">
+    <section className="min-h-screen bg-background px-4 pt-16 pb-8 text-foreground sm:px-6 sm:py-10 lg:px-10 xl:px-16">
+      <div className="mx-auto w-full max-w-7xl">
         <div className="mb-10">
           <h1 className="font-serif text-4xl md:text-5xl">Manage Recipes</h1>
           <p className="mt-3 max-w-xl text-sm leading-6 text-surface-secondary-foreground">

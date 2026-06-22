@@ -44,90 +44,95 @@ const MyRecipes = async ({ searchParams }) => {
   ).length;
 
   return (
-    <section className="min-h-screen bg-background px-6 py-10 text-foreground lg:px-16">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-10">
-          <h1 className="font-serif text-4xl md:text-5xl">My Recipes</h1>
+    <section className="min-h-screen bg-background px-4 pt-14 pb-8 text-foreground sm:px-6 sm:pt-16 sm:pb-10 lg:px-10 lg:pt-10 xl:px-16">
+      <div className="mx-auto w-full max-w-7xl overflow-hidden">
+        <div className="mb-8 sm:mb-10">
+          <h1 className="font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl">
+            My Recipes
+          </h1>
+
           <p className="mt-3 max-w-xl text-sm leading-6 text-surface-secondary-foreground">
             Manage your personal recipe collection. Edit, review, and organize
             the dishes you have shared with the RecipeHub community.
           </p>
         </div>
 
-        <div className="mb-8 grid gap-6 md:grid-cols-3">
-          <div className="border border-border bg-surface p-6">
-            <div className="flex items-center justify-between">
+        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:mb-8 xl:grid-cols-3 xl:gap-6">
+          <div className="rounded-xl border border-border bg-surface p-5 sm:p-6">
+            <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-surface-secondary-foreground sm:text-xs">
                   Total Recipes
                 </p>
-                <h2 className="mt-2 font-serif text-4xl text-accent">
+                <h2 className="mt-2 font-serif text-3xl text-accent sm:text-4xl">
                   {totalRecipes}
                 </h2>
               </div>
               <Icon
                 data={SquareChartColumn}
-                size={42}
-                className="text-border"
+                size={38}
+                className="shrink-0 text-border"
               />
             </div>
           </div>
 
-          <div className="border border-border bg-surface p-6">
-            <div className="flex items-center justify-between">
+          <div className="rounded-xl border border-border bg-surface p-5 sm:p-6">
+            <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
-                  Published On This Page
+                <p className="text-[10px] font-bold uppercase tracking-widest text-surface-secondary-foreground sm:text-xs">
+                  Published
                 </p>
-                <h2 className="mt-2 font-serif text-4xl">{publishedRecipes}</h2>
+                <h2 className="mt-2 font-serif text-3xl sm:text-4xl">
+                  {publishedRecipes}
+                </h2>
               </div>
-              <Icon data={CheckShape} size={42} className="text-border" />
+              <Icon data={CheckShape} size={38} className="shrink-0 text-border" />
             </div>
           </div>
 
-          <div className="border border-border bg-surface p-6">
-            <div className="flex items-center justify-between">
+          <div className="rounded-xl border border-border bg-surface p-5 sm:col-span-2 sm:p-6 xl:col-span-1">
+            <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-surface-secondary-foreground">
-                  Featured On This Page
+                <p className="text-[10px] font-bold uppercase tracking-widest text-surface-secondary-foreground sm:text-xs">
+                  Featured
                 </p>
-                <h2 className="mt-2 font-serif text-4xl text-link">
+                <h2 className="mt-2 font-serif text-3xl text-link sm:text-4xl">
                   {featuredRecipes}
                 </h2>
               </div>
-              <Icon data={Star} size={42} className="text-border" />
+              <Icon data={Star} size={38} className="shrink-0 text-border" />
             </div>
           </div>
         </div>
 
-        <div className="overflow-hidden border border-border bg-surface shadow-sm">
-          <div className="flex flex-col gap-4 border-b border-separator bg-surface-secondary p-5 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-1 items-center gap-3">
-              <select className="rounded border border-border bg-surface px-4 py-2 text-xs font-semibold outline-none">
+        <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+          <div className="border-b border-separator bg-surface-secondary p-5">
+            <div className="grid gap-3 lg:grid-cols-[180px_160px_minmax(0,1fr)_auto] lg:items-center">
+              <select className="h-10 w-full rounded border border-border bg-surface px-4 text-xs font-semibold outline-none">
                 <option>All Categories</option>
               </select>
 
-              <select className="rounded border border-border bg-surface px-4 py-2 text-xs font-semibold outline-none">
+              <select className="h-10 w-full rounded border border-border bg-surface px-4 text-xs font-semibold outline-none">
                 <option>Status: All</option>
               </select>
 
               <input
                 type="text"
                 placeholder="Search my recipes..."
-                className="h-10 min-w-65 flex-1 rounded border border-border bg-surface px-4 text-sm outline-none placeholder:text-surface-secondary-foreground focus:border-accent"
+                className="h-10 w-full rounded border border-border bg-surface px-4 text-sm outline-none placeholder:text-surface-secondary-foreground focus:border-accent"
               />
-            </div>
 
-            <Link
-              href="/dashboard/add-recipe"
-              className="inline-flex items-center justify-center gap-2 rounded bg-accent px-5 py-3 text-xs font-bold uppercase text-accent-foreground transition hover:bg-accent-hover"
-            >
-              <Icon data={Plus} size={14} />
-              Create New Recipe
-            </Link>
+              <Link
+                href="/dashboard/add-recipe"
+                className="inline-flex h-10 w-full items-center justify-center gap-2 rounded bg-accent px-5 text-xs font-bold uppercase text-accent-foreground transition hover:bg-accent-hover lg:w-auto"
+              >
+                <Icon data={Plus} size={14} />
+                Create Recipe
+              </Link>
+            </div>
           </div>
 
-          <div className="hidden grid-cols-[2fr_1fr_1fr_1fr_0.8fr_1fr] border-b border-separator bg-surface-secondary px-6 py-4 text-xs font-bold uppercase tracking-widest md:grid">
+          <div className="hidden border-b border-separator bg-surface-secondary px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-surface-secondary-foreground xl:grid xl:grid-cols-[minmax(0,2fr)_1fr_1fr_0.8fr_0.7fr_1fr]">
             <span>Recipe Name</span>
             <span>Category</span>
             <span>Status</span>
@@ -137,11 +142,12 @@ const MyRecipes = async ({ searchParams }) => {
           </div>
 
           {recipes.length === 0 ? (
-            <div className="px-6 py-16 text-center">
+            <div className="px-5 py-16 text-center sm:px-6">
               <h3 className="font-serif text-2xl">No recipes found</h3>
               <p className="mt-2 text-sm text-surface-secondary-foreground">
                 You have not added any recipes yet.
               </p>
+
               <Link
                 href="/dashboard/add-recipe"
                 className="mt-6 inline-flex items-center justify-center rounded bg-accent px-5 py-3 text-xs font-bold uppercase text-accent-foreground transition hover:bg-accent-hover"
@@ -153,38 +159,74 @@ const MyRecipes = async ({ searchParams }) => {
             recipes.map((recipe) => (
               <div
                 key={recipe._id}
-                className="grid gap-5 border-b border-separator px-6 py-5 last:border-b-0 md:grid-cols-[2fr_1fr_1fr_1fr_0.8fr_1fr] md:items-center"
+                className="border-b border-separator px-5 py-5 last:border-b-0 sm:px-6 xl:grid xl:grid-cols-[minmax(0,2fr)_1fr_1fr_0.8fr_0.7fr_1fr] xl:items-center xl:gap-4"
               >
-                <div className="flex items-center gap-4">
-                  <div className="relative h-14 w-16 shrink-0 overflow-hidden rounded bg-surface-secondary">
+                <div className="flex gap-4">
+                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-surface-secondary sm:h-16 sm:w-20">
                     <Image
                       src={
                         recipe.recipeImage || "/assets/recipe-placeholder.png"
                       }
                       alt={recipe.recipeName || "Recipe"}
                       fill
+                      sizes="96px"
                       unoptimized
                       className="object-cover"
                     />
                   </div>
 
-                  <div>
-                    <h3 className="font-serif text-lg leading-tight">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="wrap-break-word font-serif text-xl leading-tight sm:text-lg">
                       {recipe.recipeName}
                     </h3>
-                    <p className="mt-1 text-xs text-surface-secondary-foreground">
+
+                    <p className="mt-1 line-clamp-1 text-xs text-surface-secondary-foreground">
                       ID: #{recipe._id}
                     </p>
+
+                    <div className="mt-3 flex flex-wrap items-center gap-2 xl:hidden">
+                      <span className="rounded-full bg-surface-secondary px-3 py-1 text-[10px] font-bold uppercase text-surface-secondary-foreground">
+                        {recipe.category || "Uncategorized"}
+                      </span>
+
+                      <span
+                        className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[10px] font-bold uppercase ${
+                          recipe.status === "published"
+                            ? "bg-success/10 text-success"
+                            : "bg-warning/10 text-warning"
+                        }`}
+                      >
+                        <span
+                          className={`h-2 w-2 rounded-full ${
+                            recipe.status === "published"
+                              ? "bg-success"
+                              : "bg-warning"
+                          }`}
+                        />
+                        {recipe.status || "draft"}
+                      </span>
+
+                      <span className="rounded-full bg-surface-secondary px-3 py-1 text-[10px] font-bold uppercase text-surface-secondary-foreground">
+                        {recipe.likesCount || 0} Likes
+                      </span>
+
+                      {recipe.isFeatured && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-warning/10 px-3 py-1 text-[10px] font-bold uppercase text-warning">
+                          <Icon data={Star} size={12} />
+                          Featured
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div>
+                <div className="hidden xl:block">
                   <span className="bg-surface-secondary px-3 py-1 text-[10px] font-bold uppercase text-surface-secondary-foreground">
-                    {recipe.category}
+                    {recipe.category || "Uncategorized"}
                   </span>
                 </div>
 
-                <div>
+                <div className="hidden xl:block">
                   <span
                     className={`inline-flex items-center gap-2 text-sm capitalize ${
                       recipe.status === "published"
@@ -199,11 +241,11 @@ const MyRecipes = async ({ searchParams }) => {
                           : "bg-warning"
                       }`}
                     />
-                    {recipe.status}
+                    {recipe.status || "draft"}
                   </span>
                 </div>
 
-                <div>
+                <div className="hidden xl:block">
                   <Icon
                     data={Star}
                     size={18}
@@ -215,16 +257,17 @@ const MyRecipes = async ({ searchParams }) => {
                   />
                 </div>
 
-                <p className="text-sm text-surface-secondary-foreground">
+                <p className="hidden text-sm text-surface-secondary-foreground xl:block">
                   {recipe.likesCount || 0}
                 </p>
 
-                <div className="flex items-center justify-end gap-4">
+                <div className="mt-5 flex items-center justify-end gap-4 xl:mt-0">
                   <Link
                     href={`/dashboard/edit-recipe/${recipe._id}`}
-                    className="text-surface-secondary-foreground transition hover:text-accent"
+                    className="inline-flex h-10 flex-1 items-center justify-center rounded border border-border text-xs font-bold uppercase text-surface-secondary-foreground transition hover:border-accent hover:text-accent sm:flex-none sm:px-4 xl:h-auto xl:border-none xl:p-0"
                     title="Edit Recipe"
                   >
+                    <span className="mr-2 xl:hidden">Edit</span>
                     <Icon data={Pencil} size={16} />
                   </Link>
 
@@ -235,11 +278,13 @@ const MyRecipes = async ({ searchParams }) => {
           )}
 
           {recipes.length > 0 && (
-            <Pagination
-              pagination={pagination}
-              itemName="recipes"
-              limitOptions={[5, 8, 10, 20]}
-            />
+            <div className="border-t border-separator">
+              <Pagination
+                pagination={pagination}
+                itemName="recipes"
+                limitOptions={[5, 8, 10, 20]}
+              />
+            </div>
           )}
         </div>
       </div>

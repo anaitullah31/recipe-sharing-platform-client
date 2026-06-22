@@ -1,233 +1,300 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import NextLink from "next/link";
-import { Avatar, Button, Drawer, Dropdown, Label } from "@heroui/react";
-import { ArrowRightFromSquare, Bars, Gear, Persons } from "@gravity-ui/icons";
+import { Icon } from "@gravity-ui/uikit";
 import ThemeToggle from "./ThemeToggle";
-import { authClient } from "../lib/auth-client";
+import { ArrowRightFromSquare, Bars, Xmark } from "@gravity-ui/icons";
+import { Button, Drawer } from "@heroui/react";
+import { handleLogout } from "../lib/core/client";
 
-export default function MainNavbar() {
-  const { data: session } = authClient.useSession();
-  const user = session?.user;
+const protectedRoutes = ["/dashboard"];
 
-  const handleLogout = async () => {
-    await authClient.signOut();
+const Navbar = ({ user }) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
+  const logoutUser = async () => {
+    try {
+      await handleLogout();
+
+      setOpen(false);
+
+      if (isProtectedRoute) {
+        router.replace("/login");
+      } else {
+        router.refresh();
+      }
+    } catch (error) {
+
+    }
   };
 
-  const navItems = [
-    {
-      label: "Home",
-      href: "/",
-    },
-    {
-      label: "Browse Recipes",
-      href: "/recipes",
-    },
-    {
-      label: "Pricing",
-      href: "/pricing",
-    },
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "Browse Recipes", href: "/recipes" },
+    { name: "Pricing", href: "/pricing" },
+    ...(user ? [{ name: "Dashboard", href: "/dashboard" }] : []),
   ];
 
-  if(user?.email){
-    navItems.push(
-      {
-      label: "Dashboard",
-      href: "/dashboard",
-    },
-    )
-  }
-
-  const navLinkClass =
-    "text-sm font-semibold uppercase tracking-widest text-foreground no-underline transition-colors hover:text-accent";
-
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border bg-surface/95 backdrop-blur-md">
-      <header className="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-4 lg:px-8">
-        {/* ================= MOBILE LEFT ================= */}
-        <div className="flex items-center md:hidden">
-          <Drawer>
-            <Button isIconOnly variant="light" className="text-foreground">
-              <Bars />
-            </Button>
+    <>
+      <header className="sticky top-0 z-40 border-b border-border bg-background/95 text-foreground backdrop-blur">
+        <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4">
+          <div className="flex items-center gap-8 lg:gap-10">
+            <Link href="/" className="font-serif text-2xl text-accent">
+              RecipeHub
+            </Link>
 
-            <Drawer.Backdrop>
-              <Drawer.Content
-                placement="left"
-                className="bg-surface text-foreground"
-              >
-                <Drawer.Dialog>
-                  <Drawer.CloseTrigger />
+            <div className="hidden items-center gap-7 md:flex">
+              {navLinks.map((item) => {
+                const active =
+                  pathname === item.href ||
+                  pathname.startsWith(`${item.href}/`);
 
-                  <Drawer.Body>
-                    <nav className="flex flex-col gap-2 pt-6">
-                      {navItems.map((item) => (
-                        <NextLink
-                          key={item.href}
-                          href={item.href}
-                          className="rounded-lg px-3 py-2 font-medium text-foreground transition hover:bg-surface-hover hover:text-accent"
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`relative py-6 text-sm transition ${
+                      active
+                        ? "font-semibold text-accent"
+                        : "text-surface-secondary-foreground hover:text-accent"
+                    }`}
+                  >
+                    {item.name}
+
+                    {active && (
+                      <span className="absolute bottom-4 left-0 h-px w-full bg-accent" />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+
+            {user ? (
+              <div className="hidden md:block">
+                <Drawer>
+                  <Button className="relative h-9 w-9 overflow-hidden rounded-full p-0">
+                    <span className="relative h-10 w-10 overflow-hidden rounded-full bg-surface-secondary">
+                      <Image
+                        src={user?.image || "/assests/profile.png"}
+                        alt={user?.name || "Profile"}
+                        fill
+                        sizes="40px"
+                        className="object-cover"
+                      />
+                    </span>
+                  </Button>
+
+                  <Drawer.Backdrop>
+                    <Drawer.Content placement="right">
+                      <Drawer.Dialog className="relative flex h-full flex-col items-center px-6 py-10 text-center">
+                        <Button
+                          slot="close"
+                          variant="light"
+                          className="absolute right-4 top-4 min-w-0 px-2 text-xl"
                         >
-                          {item.label}
-                        </NextLink>
-                      ))}
+                          ×
+                        </Button>
 
-                      <div className="mt-4 border-t border-border pt-4">
-                        {!user ? (
-                          <div className="flex flex-col gap-3">
-                            <NextLink
-                              href="/login"
-                              className="flex h-10 w-full items-center justify-center border border-border text-sm font-semibold uppercase text-foreground no-underline rounded-md"
-                            >
-                              Login
-                            </NextLink>
+                        <Drawer.Body className="flex w-full flex-col items-center pt-4">
+                          <div className="relative h-20 w-20 overflow-hidden rounded-xl border border-border bg-surface-secondary p-1">
+                            <Image
+                              src={user?.image || "/assests/profile.png"}
+                              alt={user?.name || "Profile"}
+                              fill
+                              sizes="80px"
+                              className="object-cover p-1"
+                            />
                           </div>
-                        ) : (
-                          <div className="flex flex-col gap-3">
-                            <NextLink
-                              href="/dashboard"
-                              className="text-foreground hover:text-accent"
-                            >
-                              Dashboard
-                            </NextLink>
 
-                            <NextLink
-                              href="/profile"
-                              className="text-foreground hover:text-accent"
-                            >
-                              Profile
-                            </NextLink>
+                          <h3 className="mt-4 font-serif text-2xl text-foreground">
+                            {user?.name || "Guest User"}
+                          </h3>
 
-                            <Button
-                              onClick={handleLogout}
-                              color="danger"
-                              variant="light"
-                            >
-                              Logout
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </nav>
-                  </Drawer.Body>
-                </Drawer.Dialog>
-              </Drawer.Content>
-            </Drawer.Backdrop>
-          </Drawer>
-        </div>
+                          <p className="mt-1 text-sm text-surface-secondary-foreground">
+                            {user?.email || "Login to continue"}
+                          </p>
 
-        {/* ================= DESKTOP LEFT ================= */}
-        <ul className="hidden items-center gap-10 md:flex">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <NextLink href={item.href} className={navLinkClass}>
-                {item.label}
-              </NextLink>
-            </li>
-          ))}
-        </ul>
+                          {user?.plan === "premium" ? (
+                            <span className="mt-3 inline-flex items-center gap-1 rounded-full border border-amber-300/30 bg-linear-to-r from-amber-500 to-yellow-500 px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-black shadow-md">
+                              ⭐ Premium Member
+                            </span>
+                          ) : (
+                            <span className="mt-3 inline-flex items-center rounded-full border border-slate-300 bg-slate-100 px-4 py-1.5 text-xs font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                              Free Plan
+                            </span>
+                          )}
+                        </Drawer.Body>
 
-        {/* ================= LOGO ================= */}
-        <NextLink
-          href="/"
-          className="
-            absolute left-1/2
-            flex -translate-x-1/2 flex-col items-center
-            leading-none text-foreground
+                        <Drawer.Footer>
+                          <Button
+                            className="rounded-md"
+                            slot="close"
+                            variant="secondary"
+                          >
+                            Cancel
+                          </Button>
 
-            md:static
-            md:translate-x-0
-            md:items-start
-          "
-        >
-          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-accent">
-            RecipeHub
-          </span>
-
-          <span className="font-serif text-3xl font-bold tracking-tight">
-            Kitchen
-          </span>
-        </NextLink>
-
-        {/* ================= MOBILE RIGHT ================= */}
-        <div className="flex items-center md:hidden">
-          <ThemeToggle />
-        </div>
-
-        {/* ================= DESKTOP RIGHT ================= */}
-        <div className="hidden items-center gap-4 md:flex">
-          <ThemeToggle />
-
-          {!user ? (
-            <>
-              <NextLink
+                          <Button
+                            onPress={logoutUser}
+                            className="rounded-md"
+                            color="danger"
+                          >
+                            Logout
+                          </Button>
+                        </Drawer.Footer>
+                      </Drawer.Dialog>
+                    </Drawer.Content>
+                  </Drawer.Backdrop>
+                </Drawer>
+              </div>
+            ) : (
+              <Link
                 href="/login"
-                className="font-semibold uppercase text-link transition hover:text-accent"
+                onClick={() => setOpen(false)}
+                className="flex w-full items-center justify-center rounded-xl bg-linear-to-r from-amber-500 to-yellow-500 px-4 py-3 text-sm font-bold text-black shadow-lg transition-all hover:scale-[1.02]"
               >
-                Login
-              </NextLink>
+                🔑 Login
+              </Link>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-surface md:hidden"
+              aria-label="Open menu"
+            >
+              <Icon data={Bars} size={20} />
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <div
+        onClick={() => setOpen(false)}
+        className={`fixed inset-0 z-50 bg-black/50 transition-opacity md:hidden ${
+          open ? "visible opacity-100" : "invisible opacity-0"
+        }`}
+      />
+
+      <aside
+        className={`fixed right-0 top-0 z-50 flex h-screen w-[86%] max-w-[320px] flex-col border-l border-border bg-[#211a18] px-5 py-6 text-white shadow-2xl transition-transform duration-300 md:hidden ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex items-start justify-between">
+          <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-3"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-lg font-black text-accent-foreground">
+              R
+            </span>
+
+            <span>
+              <span className="block text-base font-bold leading-5">
+                RecipeHub
+              </span>
+              <span className="text-xs font-medium text-white/70">Menu</span>
+            </span>
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-lg text-white/90 hover:bg-white/10"
+            aria-label="Close menu"
+          >
+            <Icon data={Xmark} size={20} />
+          </button>
+        </div>
+
+        <nav className="mt-9 space-y-2">
+          {navLinks.map((item) => {
+            const active =
+              pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className={`flex items-center gap-4 rounded-xl px-3 py-3 text-sm font-bold transition ${
+                  active
+                    ? "bg-white/10 text-white"
+                    : "text-white/80 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="mt-auto border-t border-white/10 pt-6">
+          {user ? (
+            <>
+              <button
+                type="button"
+                onClick={logoutUser}
+                className="flex items-center gap-4 rounded-xl px-3 py-3 text-sm font-bold text-danger"
+              >
+                <Icon data={ArrowRightFromSquare} size={20} />
+                Logout
+              </button>
+
+              <Link
+                href="/dashboard/profile"
+                onClick={() => setOpen(false)}
+                className="mt-5 flex items-center gap-3 rounded-2xl border border-white/10 bg-black/15 p-3"
+              >
+                <span className="relative h-10 w-10 overflow-hidden rounded-full bg-surface-secondary">
+                  <Image
+                    src={user?.image || "/assests/profile.png"}
+                    alt={user?.name || "Profile"}
+                    fill
+                    sizes="40px"
+                    className="object-cover"
+                  />
+                </span>
+
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-bold">
+                    {user?.name || "Guest User"}
+                  </span>
+                  <span className="block truncate text-xs text-white/70">
+                    {user?.email || "Login to continue"}
+                  </span>
+                </span>
+              </Link>
             </>
           ) : (
-            <Dropdown>
-              <Dropdown.Trigger className="rounded-full">
-                <Avatar>
-                  <Avatar.Image
-                    alt="Junior Garcia"
-                    src="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/orange.jpg"
-                  />
-                  <Avatar.Fallback delayMs={600}>JD</Avatar.Fallback>
-                </Avatar>
-              </Dropdown.Trigger>
-              <Dropdown.Popover>
-                <div className="px-3 pt-3 pb-1">
-                  <div className="flex items-center gap-2">
-                    <Avatar size="sm">
-                      <Avatar.Image
-                        alt="Jane"
-                        src="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/orange.jpg"
-                      />
-                      <Avatar.Fallback delayMs={600}>JD</Avatar.Fallback>
-                    </Avatar>
-                    <div className="flex flex-col gap-0">
-                      <p className="text-sm leading-5 font-medium">
-                        {user.name}
-                      </p>
-                      <p className="text-xs leading-none text-muted">
-                        {user.email}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <Dropdown.Menu>
-                  <Dropdown.Item id="dashboard" textValue="Dashboard">
-                    <Label>Dashboard</Label>
-                  </Dropdown.Item>
-                  <Dropdown.Item id="profile" textValue="Profile">
-                    <Label>Profile</Label>
-                  </Dropdown.Item>
-                  <Dropdown.Item id="settings" textValue="Settings">
-                    <div className="flex w-full items-center justify-between gap-2">
-                      <Label>Settings</Label>
-                      <Gear className="size-3.5 text-muted" />
-                    </div>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    id="logout"
-                    textValue="Logout"
-                    variant="danger"
-                    onClick={handleLogout}
-                  >
-                    <div className="flex w-full items-center justify-between gap-2">
-                      <Label>Log Out</Label>
-                      <ArrowRightFromSquare className="size-3.5 text-danger" />
-                    </div>
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown.Popover>
-            </Dropdown>
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center justify-center rounded-xl bg-linear-to-r from-amber-500 to-yellow-500 px-4 py-3 text-sm font-bold text-black shadow-lg transition-all hover:scale-[1.02]"
+            >
+              🔑 Login
+            </Link>
           )}
         </div>
-      </header>
-    </nav>
+      </aside>
+    </>
   );
-}
+};
+
+export default Navbar;

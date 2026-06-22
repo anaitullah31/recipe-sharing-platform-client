@@ -9,24 +9,29 @@ const TransactionsHistoryPage = async ({ searchParams }) => {
   const currentPage = Number(params?.page) || 1;
   const limit = Number(params?.limit) || 8;
 
-  const data = await fetchSecureData(`/payments?page=${currentPage}&limit=${limit}`);
+  const data = await fetchSecureData(
+    `/payments?page=${currentPage}&limit=${limit}`,
+  );
 
   const payments = data?.data || [];
   const pagination = data?.pagination || {};
   const stats = data?.stats || {};
 
   return (
-    <section className="min-h-screen bg-background px-6 py-12 text-foreground lg:px-16">
-      <div className="mx-auto max-w-7xl">
+    <section className="min-h-screen bg-background px-4 pt-16 pb-8 text-foreground sm:px-6 sm:py-10 lg:px-10 xl:px-16">
+      <div className="mx-auto w-full max-w-7xl">
         <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <h1 className="font-serif text-5xl">Transaction Ledger</h1>
+            <h1 className="mt-2 font-serif text-3xl leading-tight sm:text-4xl md:text-5xl">
+              Transaction Ledger
+            </h1>
             <p className="mt-4 max-w-xl text-sm leading-6 text-surface-secondary-foreground">
               Review and oversee all financial activities within the RecipeHub
               ecosystem. Access detailed records of subscriptions and recipe
               purchases.
             </p>
           </div>
+
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             <SummaryCard
               title="Gross Revenue"

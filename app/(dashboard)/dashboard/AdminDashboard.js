@@ -11,7 +11,6 @@ import {
   ChartColumn,
   CircleExclamation,
   Heart,
-  Pencil,
   PersonPlus,
   Star,
 } from "@gravity-ui/icons";
@@ -102,32 +101,33 @@ const AdminDashboard = async () => {
     .slice(0, 5);
 
   return (
-    <section className="min-h-screen bg-background px-6 py-10 text-foreground lg:px-16">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">
+    <section className="min-h-screen bg-background px-4 pt-16 pb-8 text-foreground sm:px-6 sm:py-10 lg:px-10 xl:px-16">
+      <div className="mx-auto w-full max-w-7xl">
+        <div className="mb-8 flex flex-col gap-5 sm:mb-10 md:flex-row md:items-end md:justify-between lg:mb-12">
+          <div className="min-w-0">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent sm:tracking-[0.25em]">
               Executive Suite
             </p>
-            <h1 className="mt-2 font-serif text-4xl md:text-5xl">
+
+            <h1 className="mt-2 font-serif text-3xl leading-tight sm:text-4xl md:text-5xl">
               Dashboard Overview
             </h1>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button className="inline-flex items-center gap-2 border border-border bg-surface px-4 py-3 text-xs font-bold uppercase text-surface-secondary-foreground">
+          <div className="grid grid-cols-1 gap-3 xs:grid-cols-2 sm:flex sm:items-center">
+            <button className="inline-flex w-full items-center justify-center gap-2 border border-border bg-surface px-4 py-3 text-xs font-bold uppercase text-surface-secondary-foreground sm:w-auto">
               <Icon data={Calendar} size={14} />
               Last 30 Days
             </button>
 
-            <button className="inline-flex cursor-pointer items-center gap-2 bg-accent px-5 py-3 text-xs font-bold uppercase text-accent-foreground">
+            <button className="inline-flex w-full cursor-pointer items-center justify-center gap-2 bg-accent px-5 py-3 text-xs font-bold uppercase text-accent-foreground sm:w-auto">
               <Icon data={ArrowDownToLine} size={14} />
               Export Data
             </button>
           </div>
         </div>
 
-        <div className="mb-8 grid gap-6 md:grid-cols-4">
+        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:mb-8 lg:grid-cols-4 lg:gap-6">
           <StatCard title="Total Users" value={totalUsers} growth="+12.5%" />
           <StatCard title="Total Recipes" value={totalRecipes} growth="+6.2%" />
           <StatCard
@@ -143,16 +143,17 @@ const AdminDashboard = async () => {
           />
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1.5fr_0.75fr]">
-          <div className="border border-border bg-surface p-8">
-            <div className="mb-8 flex items-center justify-between">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(320px,0.75fr)] lg:gap-8">
+          <div className="min-w-0 rounded-xl border border-border bg-surface p-5 sm:p-6 lg:p-8">
+            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between lg:mb-8">
               <h2 className="font-serif text-2xl">Engagement Trends</h2>
 
-              <div className="flex items-center gap-4 text-[10px] font-bold uppercase">
+              <div className="flex flex-wrap items-center gap-3 text-[10px] font-bold uppercase sm:gap-4">
                 <span className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-accent" />
                   Recipe Views
                 </span>
+
                 <span className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-link" />
                   Favorites
@@ -160,12 +161,12 @@ const AdminDashboard = async () => {
               </div>
             </div>
 
-            <div className="flex h-72 items-end gap-4 border-b border-border pb-4">
+            <div className="flex h-56 items-end gap-2 overflow-hidden border-b border-border pb-4 sm:h-64 sm:gap-3 lg:h-72 lg:gap-4">
               {[35, 42, 38, 54, 72, 45, 88, 50, 100, 48, 80].map(
                 (height, index) => (
                   <div
                     key={index}
-                    className="flex flex-1 flex-col items-center gap-2"
+                    className="flex min-w-0 flex-1 flex-col items-center gap-2"
                   >
                     <div
                       className="w-full rounded-t bg-accent/70"
@@ -176,7 +177,7 @@ const AdminDashboard = async () => {
               )}
             </div>
 
-            <div className="mt-6 flex flex-col justify-between gap-4 md:flex-row">
+            <div className="mt-5 flex flex-col justify-between gap-4 sm:mt-6 md:flex-row md:items-start">
               <p className="max-w-lg text-sm leading-6 text-surface-secondary-foreground">
                 Engagement peaked during the latest featured recipe cycle,
                 showing increased recipe views and favorite activity.
@@ -184,17 +185,17 @@ const AdminDashboard = async () => {
 
               <Link
                 href="/dashboard/all-recipes"
-                className="text-xs font-bold uppercase text-accent"
+                className="shrink-0 text-xs font-bold uppercase text-accent"
               >
                 View Full Report
               </Link>
             </div>
           </div>
 
-          <div className="border border-border bg-surface p-8">
+          <div className="rounded-xl border border-border bg-surface p-5 sm:p-6 lg:p-8">
             <h2 className="font-serif text-2xl">Content Health</h2>
 
-            <div className="mt-8 space-y-8">
+            <div className="mt-6 space-y-6 sm:mt-8 sm:space-y-8">
               <HealthBar
                 label="Recipe Status"
                 value={`${Math.round(
@@ -216,7 +217,7 @@ const AdminDashboard = async () => {
               />
             </div>
 
-            <div className="mt-10 border-l-4 border-accent bg-surface-secondary p-5">
+            <div className="mt-8 border-l-4 border-accent bg-surface-secondary p-4 sm:mt-10 sm:p-5">
               <p className="text-sm italic leading-6 text-surface-secondary-foreground">
                 Moderation response time improved as reported recipes are
                 reviewed and resolved by admins.
@@ -225,11 +226,11 @@ const AdminDashboard = async () => {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-2">
-          <div className="border border-border bg-surface">
-            <div className="flex items-center justify-between border-b border-separator px-6 py-5">
+        <div className="mt-6 grid gap-6 lg:mt-8 lg:grid-cols-2 lg:gap-8">
+          <div className="overflow-hidden rounded-xl border border-border bg-surface">
+            <div className="flex items-center justify-between border-b border-separator px-5 py-4 sm:px-6 sm:py-5">
               <h2 className="font-serif text-2xl">Platform Activity</h2>
-              <span className="text-xl">...</span>
+              <span className="text-xl leading-none">...</span>
             </div>
 
             <div className="divide-y divide-separator">
@@ -243,47 +244,56 @@ const AdminDashboard = async () => {
               ))}
 
               {activities.length === 0 && (
-                <div className="px-6 py-8 text-sm text-surface-secondary-foreground">
+                <div className="px-5 py-8 text-sm text-surface-secondary-foreground sm:px-6">
                   No recent platform activity yet.
                 </div>
               )}
             </div>
           </div>
 
-          <div className="border border-border bg-surface">
-            <div className="flex items-center justify-between border-b border-separator px-6 py-5">
+          <div className="overflow-hidden rounded-xl border border-border bg-surface">
+            <div className="flex items-center justify-between border-b border-separator px-5 py-4 sm:px-6 sm:py-5">
               <h2 className="font-serif text-2xl">Top Performers</h2>
             </div>
 
             <div className="divide-y divide-separator">
               {topRecipes.map((recipe, index) => (
-                <div key={recipe._id} className="flex gap-4 px-6 py-5">
-                  <div className="relative h-20 w-24 overflow-hidden bg-surface-secondary">
+                <div
+                  key={recipe._id}
+                  className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:px-6"
+                >
+                  <div className="relative h-44 w-full shrink-0 overflow-hidden bg-surface-secondary sm:h-20 sm:w-24">
                     <Image
                       src={
                         recipe.recipeImage || "/assests/recipe-placeholder.png"
                       }
-                      alt={recipe.recipeName}
+                      alt={recipe.recipeName || "Recipe"}
                       fill
+                      sizes="(max-width: 640px) 100vw, 96px"
                       unoptimized
                       className="object-cover"
                     />
-                    <span className="absolute left-1 top-1 bg-accent px-2 py-1 text-[10px] font-bold text-accent-foreground">
+
+                    <span className="absolute left-2 top-2 bg-accent px-2 py-1 text-[10px] font-bold text-accent-foreground sm:left-1 sm:top-1">
                       #{index + 1}
                     </span>
                   </div>
 
-                  <div>
-                    <h3 className="font-serif text-xl">{recipe.recipeName}</h3>
-                    <p className="text-xs text-surface-secondary-foreground">
+                  <div className="min-w-0">
+                    <h3 className="wrap-break-word font-serif text-xl leading-snug">
+                      {recipe.recipeName}
+                    </h3>
+
+                    <p className="mt-1 text-xs text-surface-secondary-foreground">
                       By Chef {recipe.authorName || "Unknown"}
                     </p>
 
-                    <div className="mt-3 flex items-center gap-4 text-xs text-surface-secondary-foreground">
+                    <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-surface-secondary-foreground">
                       <span className="flex items-center gap-1">
                         <Icon data={Heart} size={13} />
                         {recipe.likesCount || 0}
                       </span>
+
                       <span className="flex items-center gap-1">
                         <Icon data={ChartColumn} size={13} />
                         {recipe.preparationTime || 0}m
@@ -292,6 +302,12 @@ const AdminDashboard = async () => {
                   </div>
                 </div>
               ))}
+
+              {topRecipes.length === 0 && (
+                <div className="px-5 py-8 text-sm text-surface-secondary-foreground sm:px-6">
+                  No top recipes available yet.
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -299,4 +315,5 @@ const AdminDashboard = async () => {
     </section>
   );
 };
+
 export default AdminDashboard;

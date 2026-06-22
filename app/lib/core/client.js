@@ -30,3 +30,7 @@ export const clientMutation = async (path, data, method = "POST") => {
 
   return res.json();
 };
+
+export const handleLogout = async () => {
+  await authClient.signOut();
+};

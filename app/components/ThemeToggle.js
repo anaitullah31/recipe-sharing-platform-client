@@ -14,7 +14,7 @@ const ThemeToggle = () => {
     <button
       type="button"
       onClick={handleToggle}
-      className="flex size-8 items-center justify-center rounded-full border border-border bg-surface text-accent transition hover:bg-surface-hover"
+      className="flex size-8 items-center justify-center rounded-full border border-border text-accent transition hover:bg-surface-hover"
       aria-label="Toggle theme"
     >
       <Sun className="size-4 dark:hidden" />

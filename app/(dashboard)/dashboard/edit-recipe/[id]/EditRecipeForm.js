@@ -20,7 +20,7 @@ const parseIngredients = (items = []) => {
     : [{ name: "", quantity: "" }];
 };
 
-const EditRecipeForm = ({ recipe }) => {
+const EditRecipeForm = ({ recipe, user }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -145,7 +145,11 @@ const EditRecipeForm = ({ recipe }) => {
       );
 
       if (data.success) {
-        router.push("/dashboard/my-recipes");
+        if (user?.role === "admin") {
+          router.push("/dashboard/all-recipes");
+        } else {
+          router.push("/dashboard/my-recipes");
+        }
       } else {
         alert(data.message || "Failed to update recipe");
       }

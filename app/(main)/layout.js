@@ -1,11 +1,13 @@
 import React from "react";
-import MainNavbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import { getUserSession } from "../lib/core/session";
 
-const MainLayout = ({ children }) => {
+const MainLayout = async({ children }) => {
+  const user = await getUserSession();
   return (
     <>
-      <MainNavbar />
+      <Navbar user={user} />
       <main>{children}</main>
       <Footer />
     </>

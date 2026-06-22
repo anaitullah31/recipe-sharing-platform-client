@@ -1,39 +1,68 @@
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { createAuthMiddleware } from "better-auth/api";
+import { createAuthMiddleware, APIError } from "better-auth/api";
 
 const client = new MongoClient(process.env.MONGO_URI);
 const db = client.db();
 
 export const auth = betterAuth({
-  //...other options
   emailAndPassword: {
     enabled: true,
   },
+
+  baseURL: process.env.BETTER_AUTH_URL,
+
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    },
+  },
+
   database: mongodbAdapter(db, {
-    // Optional: if you don't provide a client, database transactions won't be enabled.
     client,
   }),
+
   user: {
     additionalFields: {
       role: {
-        default: "user",
+        type: "string",
+        defaultValue: "user",
       },
       plan: {
-        default: "free",
+        type: "string",
+        defaultValue: "free",
       },
       status: {
-        default: "active",
+        type: "string",
+        defaultValue: "active",
       },
     },
   },
+
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => {
+          return {
+            data: {
+              ...user,
+              role: user.role || "user",
+              plan: user.plan || "free",
+              status: user.status || "active",
+            },
+          };
+        },
+      },
+    },
+  },
+
   hooks: {
     before: createAuthMiddleware(async (ctx) => {
       if (ctx.path !== "/sign-in/email") return;
 
       const email = ctx.body?.email;
-
       if (!email) return;
 
       const user = await db.collection("user").findOne({ email });

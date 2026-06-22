@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@gravity-ui/uikit";
-import { Camera, ForwardStep, Megaphone } from "@gravity-ui/icons";
+import { FaPinterestP, FaSquareInstagram, FaXTwitter, FaYoutube } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -14,7 +14,6 @@ const Footer = () => {
               and master the art of fine cooking.
             </p>
           </div>
-
           <div>
             <h3 className="font-serif text-xl">Explore</h3>
             <div className="mt-5 flex flex-col gap-3 text-sm text-surface-secondary-foreground">
@@ -32,7 +31,6 @@ const Footer = () => {
               </Link>
             </div>
           </div>
-
           <div>
             <h3 className="font-serif text-xl">Contact</h3>
             <div className="mt-5 space-y-3 text-sm text-surface-secondary-foreground">
@@ -46,7 +44,6 @@ const Footer = () => {
               </p>
             </div>
           </div>
-
           <div>
             <h3 className="font-serif text-xl">Social Platform</h3>
             <div className="mt-5 flex flex-col gap-3 text-sm text-surface-secondary-foreground">
@@ -54,34 +51,33 @@ const Footer = () => {
                 href="#"
                 className="flex items-center gap-2 hover:text-accent"
               >
-                <Icon data={Camera} size={14} />
+                <Icon data={FaSquareInstagram} size={14} />
                 Instagram
               </Link>
               <Link
                 href="#"
                 className="flex items-center gap-2 hover:text-accent"
               >
-                <Icon data={Megaphone} size={14} />
+                <Icon data={FaPinterestP} size={14} />
                 Pinterest
               </Link>
               <Link
                 href="#"
                 className="flex items-center gap-2 hover:text-accent"
               >
-                <Icon data={ForwardStep} size={14} />
+                <Icon data={FaYoutube} size={14} />
                 YouTube
               </Link>
               <Link
                 href="#"
                 className="flex items-center gap-2 hover:text-accent"
               >
-                <Icon data={ForwardStep} size={14} />
+                <Icon data={FaXTwitter} size={14} />
                 Twitter
               </Link>
             </div>
           </div>
         </div>
-
         <div className="mt-12 flex flex-col justify-between gap-5 border-t border-separator pt-8 text-xs text-surface-secondary-foreground md:flex-row md:items-center">
           <p>© 2026 RecipeHub Digital Atelier. All rights reserved.</p>
 

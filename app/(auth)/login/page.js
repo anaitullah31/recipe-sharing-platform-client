@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Button, } from "@heroui/react";
+import { Button } from "@heroui/react";
 import NextLink from "next/link";
 import { Envelope, Eye, EyeSlash, Lock } from "@gravity-ui/icons";
 import { authClient } from "@/app/lib/auth-client";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import GoogleSignInButton from "@/app/components/GoogleSignInButton";
 
 export default function LoginPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -29,7 +30,7 @@ export default function LoginPage() {
 
   return (
     <section className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground">
-      <div className="mx-auto grid w-full max-w-7xl overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-lg md:min-h-175 md:grid-cols-2 md:p-8">
+      <div className="mx-auto grid w-full max-w-6xl overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-lg md:min-h-175 md:grid-cols-2 md:p-8">
         {/* Left Side */}
         <div
           className="relative hidden overflow-hidden rounded-xl bg-cover bg-center md:block"
@@ -140,14 +141,7 @@ export default function LoginPage() {
                 <span className="h-px flex-1 bg-separator" />
               </div>
 
-              <Button
-                type="button"
-                variant="bordered"
-                radius="md"
-                className="h-12 w-full border bg-surface font-medium text-foreground rounded-md"
-              >
-                Sign In with Google
-              </Button>
+              <GoogleSignInButton />
 
               <p className="pt-2 text-center text-sm text-muted">
                 Do not have an account?{" "}

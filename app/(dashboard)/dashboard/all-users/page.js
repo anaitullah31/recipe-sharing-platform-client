@@ -25,10 +25,10 @@ const ManageUsersPage = async ({ searchParams }) => {
   const pagination = usersData?.pagination || {};
 
   return (
-    <section className="min-h-screen bg-background px-6 py-10 text-foreground lg:px-16">
+    <section className="min-h-screen bg-background px-4 pt-16 pb-8 text-foreground sm:px-6 sm:py-10 lg:px-10 xl:px-16">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16">
-          <h1 className="font-serif text-5xl leading-tight md:text-5xl">
+          <h1 className="mt-2 font-serif text-3xl leading-tight sm:text-4xl md:text-5xl">
             Manage Users
           </h1>
 

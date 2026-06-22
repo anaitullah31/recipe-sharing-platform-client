@@ -17,7 +17,6 @@ const PaymentHistoryPage = async ({ searchParams }) => {
   );
 
   const payments = data?.data || [];
-
   const pagination = data?.pagination || {};
 
   const stats = {
@@ -25,27 +24,47 @@ const PaymentHistoryPage = async ({ searchParams }) => {
       (total, payment) => total + (payment.amount || 0),
       0,
     ),
-
     premiumPayments: payments.filter(
       (payment) => payment.paymentType === "premium",
     ).length,
-
     recipePurchases: payments.filter(
       (payment) => payment.paymentType === "recipe",
     ).length,
   };
+
+  const formatDate = (date) =>
+    date
+      ? new Date(date).toLocaleString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "N/A";
+
+  const getStatusClass = (status) => {
+    if (status === "paid") return "bg-success/10 text-success";
+    if (status === "failed") return "bg-danger/10 text-danger";
+    return "bg-warning/10 text-warning";
+  };
+
   return (
-    <section className="min-h-screen bg-background px-6 py-12 text-foreground lg:px-16">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <h1 className="font-serif text-5xl">Payment History</h1>
+    <section className="min-h-screen bg-background px-4 pt-14 pb-8 text-foreground sm:px-6 sm:pt-16 sm:pb-10 lg:px-10 lg:pt-10 xl:px-16">
+      <div className="mx-auto w-full max-w-7xl overflow-hidden">
+        <div className="mb-8 grid gap-6 lg:mb-10 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-end">
+          <div className="min-w-0">
+            <h1 className="font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl">
+              Payment History
+            </h1>
+
             <p className="mt-4 max-w-xl text-sm leading-6 text-surface-secondary-foreground">
               View your premium membership payments and purchased recipe
               transactions.
             </p>
           </div>
-          <div className="flex gap-4">
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 xl:w-155">
             <SummaryCard
               title="Total Spent"
               value={`$${Number(stats.totalSpent || 0).toFixed(2)}`}
@@ -64,8 +83,8 @@ const PaymentHistoryPage = async ({ searchParams }) => {
           </div>
         </div>
 
-        <div className="mb-8 flex flex-col gap-4 border border-border bg-surface-secondary p-5 lg:flex-row lg:items-end lg:justify-between">
-          <div className="grid gap-4 md:grid-cols-3">
+        <div className="mb-6 rounded-xl border border-border bg-surface-secondary p-5 lg:mb-8 lg:p-6">
+          <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end">
             <div>
               <label className="text-[10px] font-bold uppercase text-surface-secondary-foreground">
                 Date Range
@@ -99,16 +118,16 @@ const PaymentHistoryPage = async ({ searchParams }) => {
                 <option>Recipe Purchase</option>
               </select>
             </div>
-          </div>
 
-          <button className="inline-flex items-center gap-2 text-xs font-semibold text-accent">
-            <Icon data={Funnel} size={13} />
-            Clear All
-          </button>
+            <button className="inline-flex h-11 w-full items-center justify-center gap-2 border border-border bg-surface px-4 text-xs font-bold uppercase text-accent transition hover:bg-surface-hover lg:w-auto">
+              <Icon data={Funnel} size={13} />
+              Clear All
+            </button>
+          </div>
         </div>
 
-        <div className="overflow-hidden border border-border bg-surface">
-          <div className="hidden grid-cols-[1.4fr_1.4fr_1.2fr_0.8fr_1.1fr_0.7fr] border-b border-separator bg-surface-secondary px-6 py-4 text-xs font-bold uppercase tracking-widest md:grid">
+        <div className="overflow-hidden rounded-xl border border-border bg-surface">
+          <div className="hidden grid-cols-[1.3fr_1.35fr_1.25fr_0.75fr_1.05fr_0.7fr] border-b border-separator bg-surface-secondary px-6 py-4 text-[10px] font-bold uppercase tracking-widest xl:grid">
             <span>User</span>
             <span>Transaction ID</span>
             <span>Service Type</span>
@@ -117,67 +136,118 @@ const PaymentHistoryPage = async ({ searchParams }) => {
             <span>Status</span>
           </div>
 
-          {payments.map((payment) => (
-            <div
-              key={payment._id}
-              className="grid gap-4 border-b border-separator px-6 py-5 last:border-b-0 md:grid-cols-[1.4fr_1.4fr_1.2fr_0.8fr_1.1fr_0.7fr] md:items-center"
-            >
-              <div className="min-w-0">
-                <h3 className="text-sm font-bold">
-                  {payment.userName || "Unknown User"}
-                </h3>
-                <p className="mt-1 break-all text-xs text-surface-secondary-foreground">
-                  {payment.userEmail}
-                </p>
-              </div>
+          {payments.map((payment) => {
+            const serviceType =
+              payment.paymentType === "premium"
+                ? "Premium Membership"
+                : "Recipe Purchase";
 
-              <p className="break-all text-xs font-bold">
-                #{payment.transactionId || payment.stripeSessionId}
-              </p>
+            const transactionId =
+              payment.transactionId || payment.stripeSessionId || "N/A";
 
-              <div className="text-sm">
-                <p>
-                  {payment.paymentType === "premium"
-                    ? "Premium Membership"
-                    : "Recipe Purchase"}
-                </p>
-                {payment.recipeName && (
-                  <span className="mt-1 block text-xs text-surface-secondary-foreground">
-                    {payment.recipeName}
-                  </span>
-                )}
-              </div>
-
-              <p className="text-sm font-bold">
-                ${Number(payment.amount || 0).toFixed(2)}
-              </p>
-
-              <p className="text-sm text-surface-secondary-foreground">
-                {new Date(payment.createdAt).toLocaleString("en-US", {
-                  month: "short",
-                  day: "2-digit",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
-
-              <span
-                className={`w-fit rounded-full px-3 py-1 text-[10px] font-bold capitalize ${
-                  payment.paymentStatus === "paid"
-                    ? "bg-success/10 text-success"
-                    : payment.paymentStatus === "failed"
-                      ? "bg-danger/10 text-danger"
-                      : "bg-warning/10 text-warning"
-                }`}
+            return (
+              <div
+                key={payment._id}
+                className="border-b border-separator px-5 py-5 last:border-b-0 sm:px-6 xl:grid xl:grid-cols-[1.3fr_1.35fr_1.25fr_0.75fr_1.05fr_0.7fr] xl:items-center xl:gap-4"
               >
-                {payment.paymentStatus}
-              </span>
-            </div>
-          ))}
+                <div className="flex items-start justify-between gap-4 xl:hidden">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
+                      {serviceType}
+                    </p>
+
+                    <h3 className="mt-1 wrap-break-word font-serif text-xl leading-tight">
+                      ${Number(payment.amount || 0).toFixed(2)}
+                    </h3>
+
+                    {payment.recipeName && (
+                      <p className="mt-1 line-clamp-1 text-xs text-surface-secondary-foreground">
+                        {payment.recipeName}
+                      </p>
+                    )}
+                  </div>
+
+                  <span
+                    className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-bold capitalize ${getStatusClass(
+                      payment.paymentStatus,
+                    )}`}
+                  >
+                    {payment.paymentStatus || "pending"}
+                  </span>
+                </div>
+
+                <div className="mt-4 grid gap-3 text-xs sm:grid-cols-2 xl:hidden">
+                  <div className="min-w-0">
+                    <p className="font-bold uppercase text-surface-secondary-foreground">
+                      Date
+                    </p>
+                    <p className="mt-1 text-sm">
+                      {formatDate(payment.createdAt)}
+                    </p>
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="font-bold uppercase text-surface-secondary-foreground">
+                      Transaction
+                    </p>
+                    <p className="mt-1 break-all text-sm font-semibold">
+                      #{transactionId}
+                    </p>
+                  </div>
+
+                  <div className="min-w-0 sm:col-span-2">
+                    <p className="font-bold uppercase text-surface-secondary-foreground">
+                      User
+                    </p>
+                    <p className="mt-1 break-all text-sm">
+                      {payment.userEmail || user?.email || "N/A"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="hidden min-w-0 xl:block">
+                  <h3 className="text-sm font-bold">
+                    {payment.userName || "Unknown User"}
+                  </h3>
+                  <p className="mt-1 break-all text-xs text-surface-secondary-foreground">
+                    {payment.userEmail}
+                  </p>
+                </div>
+
+                <p className="hidden break-all text-xs font-bold xl:block">
+                  #{transactionId}
+                </p>
+
+                <div className="hidden text-sm xl:block">
+                  <p>{serviceType}</p>
+                  {payment.recipeName && (
+                    <span className="mt-1 block text-xs text-surface-secondary-foreground">
+                      {payment.recipeName}
+                    </span>
+                  )}
+                </div>
+
+                <p className="hidden text-sm font-bold xl:block">
+                  ${Number(payment.amount || 0).toFixed(2)}
+                </p>
+
+                <p className="hidden text-sm text-surface-secondary-foreground xl:block">
+                  {formatDate(payment.createdAt)}
+                </p>
+
+                <span
+                  className={`hidden w-fit rounded-full px-3 py-1 text-[10px] font-bold capitalize xl:inline-flex ${getStatusClass(
+                    payment.paymentStatus,
+                  )}`}
+                >
+                  {payment.paymentStatus || "pending"}
+                </span>
+              </div>
+            );
+          })}
 
           {payments.length === 0 && (
-            <div className="px-6 py-16 text-center">
+            <div className="px-5 py-16 text-center sm:px-6">
               <h3 className="font-serif text-2xl">No payments found</h3>
               <p className="mt-2 text-sm text-surface-secondary-foreground">
                 There are no transactions available right now.

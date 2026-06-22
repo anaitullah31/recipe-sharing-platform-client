@@ -18,11 +18,11 @@ const ManageReportsPage = async ({ searchParams }) => {
   const pagination = data?.pagination || {};
 
   return (
-    <section className="min-h-screen bg-background px-6 py-10 text-foreground lg:px-16">
-      <div className="mx-auto max-w-7xl">
+    <section className="min-h-screen bg-background px-4 pt-16 pb-8 text-foreground sm:px-6 sm:py-10 lg:px-10 xl:px-16">
+      <div className="mx-auto w-full max-w-7xl">
         <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-start">
           <div>
-            <h1 className="font-serif text-5xl leading-tight md:text-5xl">
+            <h1 className="mt-2 font-serif text-3xl leading-tight sm:text-4xl md:text-5xl">
               Manage Reports
             </h1>
             <p className="mt-3 max-w-2xl text-base leading-7 text-surface-secondary-foreground">
@@ -30,6 +30,8 @@ const ManageReportsPage = async ({ searchParams }) => {
               culinary excellence and integrity of the RecipeHub platform.
             </p>
           </div>
+
+           
 
           <div className="flex w-fit items-center rounded-lg border border-border bg-surface-secondary px-8 py-5">
             <div className="pr-8">
