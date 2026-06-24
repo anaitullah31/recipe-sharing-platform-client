@@ -1,7 +1,7 @@
 import { fetchSecureData } from "@/app/lib/core/server";
 import RecipeCard from "./RecipeCard";
-import { Magnifier } from "@gravity-ui/icons";
 import Pagination from "@/app/components/shared/Pagination";
+import RecipeFilters from "./RecipeFilters";
 
 const RecipePage = async ({ searchParams }) => {
   const params = await searchParams;
@@ -9,8 +9,25 @@ const RecipePage = async ({ searchParams }) => {
   const currentPage = Number(params?.page) || 1;
   const limit = Number(params?.limit) || 8;
 
+  const search = params?.search || "";
+  const category = params?.category || "";
+  const cuisineType = params?.cuisineType || "";
+  const difficultyLevel = params?.difficultyLevel || "";
+  const sortBy = params?.sortBy || "";
+
+  const queryParams = new URLSearchParams();
+
+  queryParams.set("page", currentPage.toString());
+  queryParams.set("limit", limit.toString());
+
+  if (search) queryParams.set("search", search);
+  if (category) queryParams.set("category", category);
+  if (cuisineType) queryParams.set("cuisineType", cuisineType);
+  if (difficultyLevel) queryParams.set("difficultyLevel", difficultyLevel);
+  if (sortBy) queryParams.set("sortBy", sortBy);
+
   const recipesData = await fetchSecureData(
-    `/recipes?page=${currentPage}&limit=${limit}`
+    `/recipes?${queryParams.toString()}`
   );
 
   const recipes = recipesData?.data || [];
@@ -31,38 +48,13 @@ const RecipePage = async ({ searchParams }) => {
           </p>
         </div>
 
-        <div className="mt-10 flex flex-col gap-4 border border-border bg-surface px-4 py-3 shadow-sm lg:flex-row lg:items-center">
-          <div className="flex flex-1 items-center gap-2">
-            <Magnifier
-              size={16}
-              className="text-surface-secondary-foreground"
-            />
-
-            <input
-              type="text"
-              placeholder="Search recipes, ingredients, or chefs..."
-              className="w-full bg-transparent text-sm outline-none placeholder:text-surface-secondary-foreground"
-            />
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3 text-xs">
-            <select className="border-l border-border bg-transparent px-4 py-1 outline-none">
-              <option>Category</option>
-            </select>
-
-            <select className="border-l border-border bg-transparent px-4 py-1 outline-none">
-              <option>Cuisine</option>
-            </select>
-
-            <select className="border-l border-border bg-transparent px-4 py-1 outline-none">
-              <option>Difficulty</option>
-            </select>
-
-            <select className="border-l border-border bg-transparent px-4 py-1 outline-none">
-              <option>Sort By</option>
-            </select>
-          </div>
-        </div>
+        <RecipeFilters
+          search={search}
+          category={category}
+          cuisineType={cuisineType}
+          difficultyLevel={difficultyLevel}
+          sortBy={sortBy}
+        />
 
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {recipes.map((recipe) => (
@@ -74,7 +66,7 @@ const RecipePage = async ({ searchParams }) => {
           <div className="mt-16 text-center">
             <h3 className="font-serif text-2xl">No recipes found</h3>
             <p className="mt-2 text-sm text-surface-secondary-foreground">
-              Please try again later.
+              Try changing your search or filter.
             </p>
           </div>
         )}
