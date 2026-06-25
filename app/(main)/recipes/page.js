@@ -2,6 +2,7 @@ import { fetchSecureData } from "@/app/lib/core/server";
 import RecipeCard from "./RecipeCard";
 import Pagination from "@/app/components/shared/Pagination";
 import RecipeFilters from "./RecipeFilters";
+import Reveal from "@/app/components/animations/Reveal";
 
 const RecipePage = async ({ searchParams }) => {
   const params = await searchParams;
@@ -27,7 +28,7 @@ const RecipePage = async ({ searchParams }) => {
   if (sortBy) queryParams.set("sortBy", sortBy);
 
   const recipesData = await fetchSecureData(
-    `/recipes?${queryParams.toString()}`
+    `/recipes?${queryParams.toString()}`,
   );
 
   const recipes = recipesData?.data || [];
@@ -36,29 +37,35 @@ const RecipePage = async ({ searchParams }) => {
   return (
     <main className="min-h-screen bg-background">
       <section className="mx-auto max-w-7xl px-4 py-12">
-        <div className="text-center">
-          <h1 className="mt-4 font-serif text-5xl leading-tight md:text-5xl">
-            Culinary Collections
-          </h1>
+        <Reveal>
+          <div className="text-center">
+            <h1 className="mt-4 font-serif text-5xl leading-tight md:text-5xl">
+              Culinary Collections
+            </h1>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-surface-secondary-foreground">
-            Explore our curated library of professional techniques, seasonal
-            inspirations, and signature plates from the world finest digital
-            atelier.
-          </p>
-        </div>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-surface-secondary-foreground">
+              Explore our curated library of professional techniques, seasonal
+              inspirations, and signature plates from the world finest digital
+              atelier.
+            </p>
+          </div>
+        </Reveal>
 
-        <RecipeFilters
-          search={search}
-          category={category}
-          cuisineType={cuisineType}
-          difficultyLevel={difficultyLevel}
-          sortBy={sortBy}
-        />
+        <Reveal>
+          <RecipeFilters
+            search={search}
+            category={category}
+            cuisineType={cuisineType}
+            difficultyLevel={difficultyLevel}
+            sortBy={sortBy}
+          />
+        </Reveal>
 
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {recipes.map((recipe) => (
-            <RecipeCard key={recipe._id} recipe={recipe} />
+          {recipes.map((recipe, index) => (
+            <Reveal key={recipe._id} delay={index * 0.05}>
+              <RecipeCard recipe={recipe} />
+            </Reveal>
           ))}
         </div>
 

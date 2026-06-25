@@ -17,7 +17,6 @@ export default function LoginPage() {
 
     const form = e.currentTarget;
     const formData = new FormData(form);
-    console.log(formData);
 
     const { data, error } = await authClient.signIn.email({
       email: formData.get("email"),

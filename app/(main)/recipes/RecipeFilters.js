@@ -165,7 +165,7 @@ const RecipeFilters = ({
         <button
           type="button"
           onClick={clearFilters}
-          className="border border-border px-4 py-2 text-xs font-medium text-foreground transition hover:bg-surface-hover"
+          className="border border-border px-4 py-2 text-xs font-medium text-foreground transition cursor-pointer hover:bg-surface-hover"
         >
           Clear
         </button>
